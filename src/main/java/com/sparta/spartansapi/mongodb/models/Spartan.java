@@ -2,6 +2,7 @@ package com.sparta.spartansapi.mongodb.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
@@ -11,9 +12,9 @@ import java.util.Locale;
 @Document(collection = "spartans")
 public class Spartan {
     @Id private String id;
-    @Indexed private String firstName;
-    @Indexed private String middleName;
-    @Indexed private String lastName;
+    @TextIndexed(weight=2) private String firstName;
+    @TextIndexed(weight=1) private String middleName;
+    @TextIndexed(weight=3) private String lastName;
     private LocalDate startDate;
     private LocalDate endDate;
     private Course course;
@@ -33,9 +34,9 @@ public class Spartan {
 
     private void setEndDate() {
         if (course.getName().toLowerCase(Locale.ROOT).contains("engineering"))
-            this.endDate = this.getStartDate().plus(8, ChronoUnit.WEEKS);
+            this.endDate = this.getStartDate().plus(8, ChronoUnit.WEEKS).plus(2, ChronoUnit.YEARS);
         else
-            this.endDate = this.getStartDate().plus(5, ChronoUnit.WEEKS);
+            this.endDate = this.getStartDate().plus(5, ChronoUnit.WEEKS).plus(2, ChronoUnit.YEARS);
     }
 
     public String getId() {
