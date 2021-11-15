@@ -1,4 +1,4 @@
 package com.sparta.spartansapi.controllers;
 
-public class CourseController {
+public class CourseRestController {
 }
