@@ -2,7 +2,6 @@ package com.sparta.spartansapi.mappingservices;
 
 import com.sparta.spartansapi.mongodb.models.Spartan;
 import com.sparta.spartansapi.mongodb.repos.SpartanRepository;
-import com.sparta.spartansapi.utils.Utilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
@@ -18,10 +17,24 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SpartanMappingService {
+public class SpartanService {
+
     @Autowired
     private SpartanRepository spartanRepository;
+
+    @Autowired
     private MongoTemplate mongoTemplate;
+
+    public ResponseEntity<Spartan> addNewSpartan(Spartan spartan){
+        // Currently doesn't check for duplicate spartans by First+middle+last names
+        try {
+            Spartan newSpartan = spartanRepository.insert(new Spartan(spartan.getFirstName(), spartan.getMiddleName(), spartan.getLastName(),
+                    spartan.getStartDate(), spartan.getCourse(), spartan.getStream(), spartan.getEmail()));
+            return new ResponseEntity<>(newSpartan, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     public ResponseEntity<List<Spartan>> getAllSpartans() {
         try {
@@ -78,6 +91,17 @@ public class SpartanMappingService {
         }
     }
 
+    public ResponseEntity<List<Spartan>> getSpartansByStreamName(String streamName) {
+        try {
+            List<Spartan> spartans = spartanRepository.getSpartansByStreamName(streamName);
+            if(spartans.isEmpty())
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(spartans, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public ResponseEntity<List<Spartan>> getSpartansByFullTextSearch(String text) {
         TextCriteria textCriteria = TextCriteria
                 .forDefaultLanguage()
@@ -94,28 +118,12 @@ public class SpartanMappingService {
         }
     }
 
-    public ResponseEntity<Spartan> addNewSpartan(Spartan spartan){
-        try {
-            Spartan newSpartan = spartanRepository.insert(new Spartan(spartan.getFirstName(), spartan.getMiddleName(), spartan.getLastName(),
-                    spartan.getStartDate(), spartan.getCourse(), spartan.getStream(), spartan.getEmail()));
-            return new ResponseEntity<>(newSpartan, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     public ResponseEntity<Spartan> updateSpartanById(String id, Spartan spartan) {
         Optional<Spartan> foundSpartan = spartanRepository.findById(id);
-        if (foundSpartan.isPresent()) {
-            Spartan unpackedSpartan = foundSpartan.get();
-            unpackedSpartan.setFirstName(spartan.getFirstName());
-            unpackedSpartan.setMiddleName(spartan.getMiddleName());
-            unpackedSpartan.setLastName(spartan.getLastName());
-            unpackedSpartan.setStartDate(spartan.getStartDate());
-            unpackedSpartan.setCourse(spartan.getCourse());
-            unpackedSpartan.setStream(spartan.getStream());
-            unpackedSpartan.setEmail(spartan.getEmail());
-            return new ResponseEntity<>(spartanRepository.save(unpackedSpartan), HttpStatus.OK);
+           if (foundSpartan.isPresent()) {
+            Spartan updatedSpartan = new Spartan(spartan.getFirstName(), spartan.getMiddleName(), spartan.getLastName(),
+                    spartan.getStartDate(), spartan.getCourse(), spartan.getStream(), spartan.getEmail());
+            return new ResponseEntity<>(spartanRepository.save(updatedSpartan), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

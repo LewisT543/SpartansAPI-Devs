@@ -1,6 +1,6 @@
 package com.sparta.spartansapi.controllers;
 
-import com.sparta.spartansapi.mappingservices.SpartanMappingService;
+import com.sparta.spartansapi.mappingservices.SpartanService;
 import com.sparta.spartansapi.mongodb.models.Spartan;
 import com.sparta.spartansapi.utils.Utilities;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,54 +15,54 @@ import java.util.List;
 public class SpartanRestController {
 
     @Autowired
-    private SpartanMappingService spartanMappingService;
+    private SpartanService spartanService;
 
     @GetMapping("/all")
     public ResponseEntity<List<Spartan>> getAllSpartans()  {
-        return spartanMappingService.getAllSpartans();
+        return spartanService.getAllSpartans();
     }
 
     @GetMapping("/")
     public ResponseEntity<List<Spartan>> getSpartansByFullTextSearch(@RequestParam String text) {
-        return spartanMappingService.getSpartansByFullTextSearch(text);
+        return spartanService.getSpartansByFullTextSearch(text);
     }
 
     @GetMapping("/")
     public ResponseEntity<List<Spartan>> getSpartansByFirstName(@RequestParam String firstName) {
-        return spartanMappingService.getAllSpartansByFirstName(firstName);
+        return spartanService.getAllSpartansByFirstName(firstName);
     }
 
     @GetMapping("/")
     public ResponseEntity<List<Spartan>> getSpartansByLastName(@RequestParam String lastName) {
-        return spartanMappingService.getAllSpartansByLastName(lastName);
+        return spartanService.getAllSpartansByLastName(lastName);
     }
 
     @GetMapping("/")
     public ResponseEntity<List<Spartan>> getSpartansByStartDate(@RequestParam String startDate) {
         if (Utilities.isParseableDate(startDate))
-            return spartanMappingService.getSpartansByStartDateAfter(Utilities.parseStringToLocalDate(startDate));
+            return spartanService.getSpartansByStartDateAfter(Utilities.parseStringToLocalDate(startDate));
         else return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/")
     public ResponseEntity<List<Spartan>> getSpartansByCourseName(@RequestParam String course) {
-        return spartanMappingService.getSpartansByCourseName(course);
+        return spartanService.getSpartansByCourseName(course);
     }
 
     @PostMapping("/")
     public ResponseEntity<Spartan> addNewSpartan(@RequestBody Spartan spartan) {
-        return spartanMappingService.addNewSpartan(spartan);
+        return spartanService.addNewSpartan(spartan);
     }
 
     @PutMapping("/{id}/update")
     public ResponseEntity<Spartan> updateSpartanById(@PathVariable("id") String id,
                                                  @RequestBody Spartan spartan) {
-        return spartanMappingService.updateSpartanById(id, spartan);
+        return spartanService.updateSpartanById(id, spartan);
     }
 
     @GetMapping("/{id}/delete")
     public ResponseEntity<HttpStatus> deleteSpartanById(@PathVariable("id") String id) {
-        return spartanMappingService.deleteSpartanById(id);
+        return spartanService.deleteSpartanById(id);
     }
 
 }
