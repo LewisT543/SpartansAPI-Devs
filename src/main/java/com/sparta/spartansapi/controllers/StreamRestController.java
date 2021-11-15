@@ -1,14 +1,14 @@
 package com.sparta.spartansapi.controllers;
 
-import com.sparta.spartansapi.mappingservices.classes.CourseMappingService;
+import com.sparta.spartansapi.mappingservices.classes.StreamMappingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/courses")
-public class CourseRestController {
+@RequestMapping("/streams")
+public class StreamRestController {
 
     @Autowired
-    private CourseMappingService courseMappingService;
+    private StreamMappingService streamMappingService;
 }
