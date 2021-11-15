@@ -2,6 +2,7 @@ package com.sparta.spartansapi.mappingservices;
 
 import com.sparta.spartansapi.mongodb.models.Spartan;
 import com.sparta.spartansapi.mongodb.repos.SpartanRepository;
+import com.sparta.spartansapi.utils.Utilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;

@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
+import java.util.Objects;
 
 @Document(collection = "spartans")
 public class Spartan {
@@ -37,6 +38,21 @@ public class Spartan {
             this.endDate = this.getStartDate().plus(8, ChronoUnit.WEEKS).plus(2, ChronoUnit.YEARS);
         else
             this.endDate = this.getStartDate().plus(5, ChronoUnit.WEEKS).plus(2, ChronoUnit.YEARS);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Spartan spartan = (Spartan) o;
+        return firstName.equals(spartan.firstName)
+                && Objects.equals(middleName, spartan.middleName)
+                && lastName.equals(spartan.lastName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, middleName, lastName);
     }
 
     public String getId() {
