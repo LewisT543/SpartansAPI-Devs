@@ -1,6 +1,7 @@
 package com.sparta.spartansapi.mongodb.models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -106,3 +107,4 @@ public class Spartan {
         this.email = email;
     }
 }
+

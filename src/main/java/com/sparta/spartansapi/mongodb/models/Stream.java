@@ -7,9 +7,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Stream {
     @Id private String id;
     private String name;
-    private Integer duration;
+    private Long duration;
 
-    public Stream(String name, Integer duration) {
+    public Stream() { }
+
+    public Stream(String name, Long duration) {
         this.name = name;
         this.duration = duration;
     }
@@ -30,11 +32,11 @@ public class Stream {
         this.name = name;
     }
 
-    public Integer getDuration() {
+    public Long getDuration() {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(Long duration) {
         this.duration = duration;
     }
 }
