@@ -10,14 +10,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/courses")
 public class CourseRestController {
 
-//    @Autowired
-//    private CourseMappingService courseMappingService;
-
-    private CourseRepository courseRepository;
-
-    @Autowired
-    public CourseRestController(CourseRepository courseRepository) {
-        this.courseRepository = courseRepository;
-    }
 
 }
