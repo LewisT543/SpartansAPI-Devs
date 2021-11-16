@@ -22,6 +22,11 @@ public class SpartanRestController {
         return spartanService.getAllSpartans();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getSpartansById(@PathVariable String id) {
+        return spartanService.getSpartanById(id);
+    }
+
     @GetMapping(value="/", params={"q"})
     public ResponseEntity<?> getSpartansByFullTextSearch(@RequestParam String q) {
         return spartanService.getSpartansByFullTextSearch(q);
