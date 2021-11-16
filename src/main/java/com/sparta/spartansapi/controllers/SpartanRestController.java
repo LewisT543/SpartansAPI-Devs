@@ -11,57 +11,99 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/spartans")
+@RequestMapping("/spartan")
 public class SpartanRestController {
 
     @Autowired
     private SpartanService spartanService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Spartan>> getAllSpartans()  {
+    public ResponseEntity<?> getAllSpartans()  {
         return spartanService.getAllSpartans();
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<Spartan>> getSpartansByFullTextSearch(@RequestParam String text) {
-        return spartanService.getSpartansByFullTextSearch(text);
+    @GetMapping(value="/", params={"q"})
+    public ResponseEntity<?> getSpartansByFullTextSearch(@RequestParam String q) {
+        return spartanService.getSpartansByFullTextSearch(q);
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<Spartan>> getSpartansByFirstName(@RequestParam String firstName) {
-        return spartanService.getAllSpartansByFirstName(firstName);
+    @GetMapping(value="/", params={"firstname"})
+    public ResponseEntity<?> getSpartansByFirstName(@RequestParam String firstname) {
+        return spartanService.getAllSpartansByFirstName(firstname);
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<Spartan>> getSpartansByLastName(@RequestParam String lastName) {
-        return spartanService.getAllSpartansByLastName(lastName);
+    @GetMapping(value="/", params={"lastname"})
+    public ResponseEntity<?> getSpartansByLastName(@RequestParam String lastname) {
+        return spartanService.getAllSpartansByLastName(lastname);
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<Spartan>> getSpartansByStartDate(@RequestParam String startDate) {
-        if (Utilities.isParseableDate(startDate))
-            return spartanService.getSpartansByStartDateAfter(Utilities.parseStringToLocalDate(startDate));
-        else return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    @GetMapping(value="/name", params={"firstname", "lastname"})
+    public ResponseEntity<?> getSpartansByFirstNameAndLastName(@RequestParam(required = true) String firstName,
+                                                                           @RequestParam(required = false) String lastName){
+        return spartanService.getAllSpartansByFirstNameAndLastName(firstName,lastName);
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<Spartan>> getSpartansByCourseName(@RequestParam String course) {
-        return spartanService.getSpartansByCourseName(course);
+//    @GetMapping(value="/start", params={"startdate"})
+//    public ResponseEntity<?> getSpartansByStartDate(@RequestParam String startDate) {
+//        if (Utilities.isParseableDate(startDate))
+//            return spartanService.getSpartansByStartDateAfter(Utilities.parseStringToLocalDate(startDate));
+//        else return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+//    }
+//
+//    @GetMapping(value="/range", params={"startdatelower", "startdateupper"})
+//    public ResponseEntity<?> getSpartansByStartDate(@RequestParam String startDateMin,
+//                                                                @RequestParam String startDateMax) {
+//        if (Utilities.isParseableDate(startDateMin) && Utilities.isParseableDate(startDateMax))
+//            return spartanService.getSpartansByStartDateBetween(Utilities.parseStringToLocalDate(startDateMin),
+//                    Utilities.parseStringToLocalDate(startDateMax));
+//        else return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+//    }
+
+    @GetMapping(value="/start", params={"startdate"})
+    public ResponseEntity<?> getSpartansByStartDate(@RequestParam String startDate) {
+        if (Utilities.stringToDate(startDate) != null)
+            return spartanService.getSpartansByStartDateAfter(Utilities.stringToDate(startDate));
+        else
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+
     }
 
-    @PostMapping("/")
-    public ResponseEntity<Spartan> addNewSpartan(@RequestBody Spartan spartan) {
+    @GetMapping(value="/range", params={"startdatelower", "startdateupper"})
+    public ResponseEntity<?> getSpartansByStartDate(@RequestParam String startDateMin,
+                                                    @RequestParam String startDateMax) {
+        if ((Utilities.stringToDate(startDateMin) != null) && (Utilities.stringToDate(startDateMax) != null)) {
+            return spartanService.getSpartansByStartDateBetween(Utilities.stringToDate(startDateMin),
+                    Utilities.stringToDate(startDateMax));
+        } else
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+
+
+
+//    @GetMapping(value="/course", params={"name"})
+//    public ResponseEntity<?> getSpartansByCourseName(@RequestParam String course) {
+//        return spartanService.getSpartansByCourseName(course);
+//    }
+//
+//    @GetMapping(value="/stream", params={"name"})
+//    public ResponseEntity<?> getSpartansByStreamName(@RequestParam String stream) {
+//        return spartanService.getSpartansByStreamName(stream);
+//    }
+
+    @PostMapping(value="/add")
+    public ResponseEntity<?> addNewSpartan(@RequestBody Spartan spartan) {
         return spartanService.addNewSpartan(spartan);
     }
 
-    @PutMapping("/{id}/update")
-    public ResponseEntity<Spartan> updateSpartanById(@PathVariable("id") String id,
-                                                 @RequestBody Spartan spartan) {
+    //// THIS IS WEIRD ATM ////
+    @PutMapping(value="/update/{id}")
+    public ResponseEntity<?> updateSpartanById(@PathVariable("id") String id,
+                                                    @RequestBody Spartan spartan) {
         return spartanService.updateSpartanById(id, spartan);
     }
 
-    @GetMapping("/{id}/delete")
-    public ResponseEntity<HttpStatus> deleteSpartanById(@PathVariable("id") String id) {
+    @DeleteMapping(value="/delete/{id}")
+    public ResponseEntity<?> deleteSpartanById(@PathVariable("id") String id) {
         return spartanService.deleteSpartanById(id);
     }
 

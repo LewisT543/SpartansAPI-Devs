@@ -1,6 +1,7 @@
 package com.sparta.spartansapi.mappingservices;
 
-import com.sparta.spartansapi.mappingservices.interfaces.StreamService;
+import org.springframework.stereotype.Service;
 
-public class StreamMappingService implements StreamService {
+@Service
+public class StreamMappingService{
 }

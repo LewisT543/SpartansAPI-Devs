@@ -1,59 +1,36 @@
 package com.sparta.spartansapi.mongodb.models;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.Date;
 
 @Document(collection = "spartans")
 public class Spartan {
-    @Id private String id;
-    @TextIndexed(weight=2) private String firstName;
-    @TextIndexed(weight=1) private String middleName;
-    @TextIndexed(weight=3) private String lastName;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private Course course;
+    @Id
+    private String id;
+    @TextIndexed private String firstName;
+    @TextIndexed private String middleName;
+    @TextIndexed private String lastName;
+    private Date startDate;
+    private Date endDate;
+    private String course;
     private String stream;
     private String email;
 
-    public Spartan(String firstName, String middleName, String lastName, LocalDate startDate, Course course, String stream, String email) {
+    public Spartan(String firstName, String middle_name, String last_name, Date start_date,
+                   String course, String stream, String email, Date end_date) {
         this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.startDate = startDate;
+        this.middleName = middle_name;
+        this.lastName = last_name;
+        this.startDate = start_date;
         this.course = course;
         this.stream = stream;
         this.email = email;
-        setEndDate();
+        this.endDate = end_date;
     }
 
-    private void setEndDate() {
-        if (course.getName().toLowerCase(Locale.ROOT).contains("engineering"))
-            this.endDate = this.getStartDate().plus(8, ChronoUnit.WEEKS).plus(2, ChronoUnit.YEARS);
-        else
-            this.endDate = this.getStartDate().plus(5, ChronoUnit.WEEKS).plus(2, ChronoUnit.YEARS);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Spartan spartan = (Spartan) o;
-        return firstName.equals(spartan.firstName)
-                && Objects.equals(middleName, spartan.middleName)
-                && lastName.equals(spartan.lastName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, middleName, lastName);
-    }
 
     public String getId() {
         return id;
@@ -87,27 +64,27 @@ public class Spartan {
         this.lastName = lastName;
     }
 
-    public LocalDate getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
-    public Course getCourse() {
+    public String getCourse() {
         return course;
     }
 
-    public void setCourse(Course course) {
+    public void setCourse(String course) {
         this.course = course;
     }
 
@@ -127,4 +104,3 @@ public class Spartan {
         this.email = email;
     }
 }
-

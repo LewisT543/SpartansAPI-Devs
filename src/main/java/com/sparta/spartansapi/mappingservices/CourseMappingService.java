@@ -1,6 +1,7 @@
 package com.sparta.spartansapi.mappingservices;
 
-import com.sparta.spartansapi.mappingservices.interfaces.CourseService;
+import org.springframework.stereotype.Service;
 
-public class CourseMappingService implements CourseService {
+@Service
+public class CourseMappingService {
 }
