@@ -12,6 +12,8 @@ public class Course {
         this.name = name;
     }
 
+    public Course() { }
+
     public String get_id() {
         return _id;
     }
@@ -26,5 +28,6 @@ public class Course {
 
     public void setName(String name) {
         this.name = name;
+
     }
 }
