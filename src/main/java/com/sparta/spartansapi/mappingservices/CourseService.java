@@ -31,6 +31,7 @@ public class CourseService {
             courseRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -43,6 +44,7 @@ public class CourseService {
             }
             return new ResponseEntity<>(courses, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -65,6 +67,7 @@ public class CourseService {
        try {
            return new ResponseEntity<>(courseRepository.insert(course), HttpStatus.OK);
        } catch (Exception e) {
+           e.printStackTrace();
            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
        }
     }
@@ -73,6 +76,7 @@ public class CourseService {
         try {
             return new ResponseEntity<>(courseRepository.findAll(), HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
