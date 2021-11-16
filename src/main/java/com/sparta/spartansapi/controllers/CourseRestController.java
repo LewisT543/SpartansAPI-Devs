@@ -28,7 +28,7 @@ public class CourseRestController {
     }
 
     @GetMapping(params = {"coursename"})
-    public List<Course> getAllCoursesByName(@RequestParam String coursename) {
+    public ResponseEntity<List<Course>> getAllCoursesByName(@RequestParam String coursename) {
         return courseService.getByCourseName(coursename);
     }
 

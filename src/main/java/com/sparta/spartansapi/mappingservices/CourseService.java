@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,8 +33,16 @@ public class CourseService {
         }
     }
 
-    public List<Course> getByCourseName(String name) {
-        return courseRepository.getCoursesByCourseNameContains(name);
+    public ResponseEntity<List<Course>> getByCourseName(String name) {
+        try {
+            List<Course> courses = courseRepository.getCoursesByCourseNameContains(name);
+            if (courses.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(courses, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     public ResponseEntity<Course> updateStream(String id, Course courseParam){
