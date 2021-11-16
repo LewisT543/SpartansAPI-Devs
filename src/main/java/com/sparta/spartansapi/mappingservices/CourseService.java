@@ -60,6 +60,7 @@ public class CourseService {
         }
     }
 
+
     public ResponseEntity<Course> addCourse(Course course) {
        try {
            return new ResponseEntity<>(courseRepository.insert(course), HttpStatus.OK);
@@ -67,4 +68,14 @@ public class CourseService {
            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
        }
     }
+
+    public ResponseEntity<List<Course>> getAllCourses() {
+        try {
+            return new ResponseEntity<>(courseRepository.findAll(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }
