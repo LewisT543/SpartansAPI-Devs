@@ -37,7 +37,7 @@ public class CourseRestController {
         return courseService.getByCourseName(coursename);
     }
 
-    @DeleteMapping(value = "/delete/{id}", params = {"id"})
+    @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<HttpStatus> deleteCourseById(@PathVariable("id") String id) {
         return courseService.deleteById(id);
     }
