@@ -9,16 +9,17 @@ public class Course {
     @Id private String _id;
     @Field(value = "course_name")
     private String courseName;
-    private Integer course_duration;
+    @Field(value = "course_duration")
+    private Integer courseDuration;  // measured in weeks
 
     public Course(String courseName) {
         this.courseName = courseName;
         if (courseName.contains("Business")) {
-            course_duration = 5;
+            courseDuration = 5;
         } else if (courseName.contains("Engineering")) {
-            course_duration = 11;
+            courseDuration = 11;
         } else {
-            course_duration = null;
+            courseDuration = null;
         }
     }
 
@@ -38,11 +39,11 @@ public class Course {
         this.courseName = courseName;
     }
 
-    public Integer getCourse_duration() {
-        return course_duration;
+    public Integer getCourseDuration() {
+        return courseDuration;
     }
 
-    public void setCourse_duration(Integer course_duration) {
-        this.course_duration = course_duration;
+    public void setCourseDuration(Integer courseDuration) {
+        this.courseDuration = courseDuration;
     }
 }
