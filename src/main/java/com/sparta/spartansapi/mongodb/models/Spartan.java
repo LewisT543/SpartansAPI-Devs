@@ -4,81 +4,78 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import java.util.Locale;
 
 @Document(collection = "spartans")
 public class Spartan {
-    @Id private String id;
-    @Indexed private String firstName;
-    @Indexed private String middleName;
-    @Indexed private String lastName;
-    private Date startDate;
-    private Date endDate;
+    @Id private String _id;
+    @Indexed private String first_name;
+    @Indexed private String middle_name;
+    @Indexed private String last_name;
+    private Date start_date;
+    private Date end_date;
     private String course;
     private String stream;
     private String email;
 
-    public Spartan(String firstName, String middleName, String lastName, Date startDate,
-                   String course, String stream, String email, Date endDate) {
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.startDate = startDate;
+    public Spartan(String first_name, String middle_name, String last_name, Date start_date,
+                   String course, String stream, String email, Date end_date) {
+        this.first_name = first_name;
+        this.middle_name = middle_name;
+        this.last_name = last_name;
+        this.start_date = start_date;
         this.course = course;
         this.stream = stream;
         this.email = email;
-        this.endDate = endDate;
+        this.end_date = end_date;
     }
 
     public String getId() {
-        return id;
+        return _id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this._id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirst_name() {
+        return first_name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
     }
 
-    public String getMiddleName() {
-        return middleName;
+    public String getMiddle_name() {
+        return middle_name;
     }
 
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
+    public void setMiddle_name(String middle_name) {
+        this.middle_name = middle_name;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getLast_name() {
+        return last_name;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public Date getStart_date() {
+        return start_date;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setStart_date(Date start_date) {
+        this.start_date = start_date;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public Date getEnd_date() {
+        return end_date;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setEnd_date(Date end_date) {
+        this.end_date = end_date;
     }
 
     public String getCourse() {

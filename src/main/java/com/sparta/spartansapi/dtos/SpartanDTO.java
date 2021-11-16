@@ -5,44 +5,44 @@ import com.sparta.spartansapi.utils.Utilities;
 import java.util.Date;
 
 public class SpartanDTO {
-    private String firstName, lastName;
-    private String middleName, course, stream, email;
-    private Date startDate, endDate;
+    private String first_name, last_name;
+    private String middle_name, course, stream, email;
+    private Date start_date, end_date;
 
-    public SpartanDTO(String firstName, String lastName, String middleName, String course,
-                      String stream, String email, Date startDate, Date endDate) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.middleName = middleName;
+    public SpartanDTO(String first_name, String last_name, String middle_name, String course,
+                      String stream, String email, Date start_date, Date end_date) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.middle_name = middle_name;
         this.course = course;
         this.stream = stream;
         this.email = email;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.start_date = start_date;
+        this.end_date = end_date;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirst_name() {
+        return first_name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getLast_name() {
+        return last_name;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
     }
 
-    public String getMiddleName() {
-        return middleName;
+    public String getMiddle_name() {
+        return middle_name;
     }
 
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
+    public void setMiddle_name(String middle_name) {
+        this.middle_name = middle_name;
     }
 
     public String getCourse() {
@@ -69,19 +69,19 @@ public class SpartanDTO {
         this.email = email;
     }
 
-    public String getStartDate() {
-        return Utilities.dateToString(startDate);
+    public String getStart_date() {
+        return Utilities.dateToString(start_date);
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setStart_date(Date start_date) {
+        this.start_date = start_date;
     }
 
-    public String getEndDate() {
-        return Utilities.dateToString(endDate);
+    public String getEnd_date() {
+        return Utilities.dateToString(end_date);
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setEnd_date(Date end_date) {
+        this.end_date = end_date;
     }
 }
