@@ -159,11 +159,11 @@ public class SpartanService {
     public ResponseEntity<?>getSpartansByFullTextSearch(String text) {
         TextCriteria textCriteria = TextCriteria
                 .forDefaultLanguage()
-                .matching(text);
+                .matchingAny(text);
         Query byFreeText = TextQuery.queryText(textCriteria)
                 .sortByScore();
         try {
-            List<Spartan> spartans = this.mongoTemplate.find(byFreeText, Spartan.class);
+            List<Spartan> spartans = mongoTemplate.find(byFreeText, Spartan.class);
             if(spartans.isEmpty())
                 return ResponseEntity
                         .status(HttpStatus.NO_CONTENT)

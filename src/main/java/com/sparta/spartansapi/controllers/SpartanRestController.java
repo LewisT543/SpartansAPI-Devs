@@ -75,10 +75,8 @@ public class SpartanRestController {
             return spartanService.getSpartansByStartDateBetween(Utilities.stringToDate(startdatelower),
                     Utilities.stringToDate(startdateupper));
         } else
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null, HttpStatus.CHECKPOINT);
     }
-
-
 
 //    @GetMapping(value="/course", params={"name"})
 //    public ResponseEntity<?> getSpartansByCourseName(@RequestParam String course) {
