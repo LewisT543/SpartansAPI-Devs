@@ -1,5 +1,6 @@
 package com.sparta.spartansapi.mongodb.models;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -7,19 +8,19 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "courses")
 public class Course {
     @Id private String _id;
-    @Field(value = "course_name")
-    private String courseName;
-    @Field(value = "course_duration")
-    private Integer courseDuration;  // measured in weeks
+    private String name;
+    private Integer duration;  // measured in weeks
 
-    public Course(String courseName) {
-        this.courseName = courseName;
-        if (courseName.contains("Business")) {
-            courseDuration = 5;
-        } else if (courseName.contains("Engineering")) {
-            courseDuration = 11;
-        } else {
-            courseDuration = null;
+    public Course(String _id, String name) {
+        this._id = _id;
+        this.name = name;
+
+        if (name.contains("Business")) {
+            duration = 5;
+        } else if (name.contains("Engineering")) {
+            duration = 11;
+        } else {  // should throw an exception
+            duration = null;
         }
     }
 
@@ -31,19 +32,20 @@ public class Course {
         this._id = _id;
     }
 
-    public String getCourseName() {
-        return courseName;
+    public String getName() {
+        return name;
     }
 
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
+    public void setName(String name) {
+        this.name = name;
+
     }
 
-    public Integer getCourseDuration() {
-        return courseDuration;
+    public Integer getDuration() {
+        return duration;
     }
 
-    public void setCourseDuration(Integer courseDuration) {
-        this.courseDuration = courseDuration;
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 }

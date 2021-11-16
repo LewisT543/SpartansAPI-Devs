@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +34,7 @@ public class CourseService {
 
     public ResponseEntity<List<Course>> getByCourseName(String name) {
         try {
-            List<Course> courses = courseRepository.getCoursesByCourseNameContains(name);
+            List<Course> courses = courseRepository.getCoursesByNameContains(name);
             if (courses.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -49,8 +48,8 @@ public class CourseService {
         Optional<Course> courseData = courseRepository.findById(id);
         if (courseData.isPresent()){
             Course course = courseData.get();
-            course.setCourseName(courseParam.getCourseName());
-            course.setCourseDuration(courseParam.getCourseDuration());
+            course.setName(courseParam.getName());
+            course.setDuration(courseParam.getDuration());
             return new ResponseEntity<>(courseRepository.save(course), HttpStatus.OK);
         }
         else {

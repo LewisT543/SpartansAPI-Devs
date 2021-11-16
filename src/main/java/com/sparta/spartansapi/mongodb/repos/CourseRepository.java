@@ -7,7 +7,11 @@ import java.util.List;
 
 public interface CourseRepository extends MongoRepository<Course, String> {
 
-    List<Course> getCoursesByCourseNameContains(String name);
+    List<Course> getCoursesByNameContains(String course);
+
+    //List<Course> getCoursesByCourse_nameContains(String name);
+
+    //List<Course> getCoursesByCourseNameContains(String name);
 
     //List<Course> findAll();
     //List<Course> findCourseByName(String name);
