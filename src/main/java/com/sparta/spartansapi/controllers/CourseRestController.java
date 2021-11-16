@@ -41,4 +41,9 @@ public class CourseRestController {
     public ResponseEntity<Course> updateCourseById(@PathVariable("id") String id, @RequestBody Course course) {
         return courseService.updateCourse(id, course);
     }
+
+    @PostMapping("/add")
+    public ResponseEntity<Course> addCourse(@RequestBody Course course) {
+        return courseService.addCourse(course);
+    }
 }
