@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface SpartanRepository extends MongoRepository<Spartan, String> {
 
-    List<Spartan> getSpartansByFirstName(String firstName);
+    List<Spartan> getSpartansByFirstNameContains(String firstName);
     List<Spartan> getSpartansByLastName(String lastName);
     List<Spartan> getSpartansByFirstNameAndLastName(String firstName, String lastName);
     List<Spartan> getSpartansByStartDateAfter(Date startDate);

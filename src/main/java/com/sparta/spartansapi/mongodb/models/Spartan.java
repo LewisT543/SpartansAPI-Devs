@@ -19,16 +19,18 @@ public class Spartan {
     private String stream;
     private String email;
 
-    public Spartan(String firstName, String middle_name, String last_name, Date start_date,
-                   String course, String stream, String email, Date end_date) {
+    public Spartan() { };
+
+    public Spartan(String firstName, String middleName, String lastName, Date startDate,
+                   String course, String stream, String email, Date endDate) {
         this.firstName = firstName;
-        this.middleName = middle_name;
-        this.lastName = last_name;
-        this.startDate = start_date;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.startDate = startDate;
         this.course = course;
         this.stream = stream;
         this.email = email;
-        this.endDate = end_date;
+        this.endDate = endDate;
     }
 
 
