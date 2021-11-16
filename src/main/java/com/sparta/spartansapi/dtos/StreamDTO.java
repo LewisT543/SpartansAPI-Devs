@@ -1,31 +1,31 @@
 package com.sparta.spartansapi.dtos;
 
 public class StreamDTO {
-    private String stream_name;
-    private Integer stream_duration;
+    private String streamname;
+    private Integer streamduration;
 
-    public StreamDTO(String stream_name, Integer stream_duration) {
-        this.stream_name = stream_name;
-        this.stream_duration = stream_duration;
+    public StreamDTO(String streamname, Integer streamduration) {
+        this.streamname = streamname;
+        this.streamduration = streamduration;
     }
 
     public StreamDTO() {
 
     }
 
-    public String getStream_name() {
-        return stream_name;
+    public String getStreamname() {
+        return streamname;
     }
 
-    public void setStream_name(String stream_name) {
-        this.stream_name = stream_name;
+    public void setStreamname(String streamname) {
+        this.streamname = streamname;
     }
 
-    public Integer getStream_duration() {
-        return stream_duration;
+    public Integer getStreamduration() {
+        return streamduration;
     }
 
-    public void setStream_duration(Integer stream_duration) {
-        this.stream_duration = stream_duration;
+    public void setStreamduration(Integer streamduration) {
+        this.streamduration = streamduration;
     }
 }

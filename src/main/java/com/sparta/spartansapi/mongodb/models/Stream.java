@@ -2,17 +2,24 @@ package com.sparta.spartansapi.mongodb.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "streams")
 public class Stream {
     @Id private String _id;
-    private String stream_name;
-    private Integer stream_duration;
+    @Field(value = "streamname")
+    private String streamname;
+    @Field(value = "streamduration")
+    private Integer streamduration;
 
     public Stream(String _id, String stream_name, Integer stream_duration) {
         this._id = _id;
-        this.stream_name = stream_name;
-        this.stream_duration = stream_duration;
+        this.streamname = stream_name;
+        this.streamduration = stream_duration;
+    }
+
+    public Stream(){
+
     }
 
     public String get_id() {
@@ -23,19 +30,19 @@ public class Stream {
         this._id = _id;
     }
 
-    public String getStream_name() {
-        return stream_name;
+    public String getStreamname() {
+        return streamname;
     }
 
-    public void setStream_name(String stream_name) {
-        this.stream_name = stream_name;
+    public void setStreamname(String streamname) {
+        this.streamname = streamname;
     }
 
-    public Integer getStream_duration() {
-        return stream_duration;
+    public Integer getStreamduration() {
+        return streamduration;
     }
 
-    public void setStream_duration(Integer stream_duration) {
-        this.stream_duration = stream_duration;
+    public void setStreamduration(Integer streamduration) {
+        this.streamduration = streamduration;
     }
 }
