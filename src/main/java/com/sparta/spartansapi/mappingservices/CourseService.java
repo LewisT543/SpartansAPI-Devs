@@ -60,4 +60,11 @@ public class CourseService {
         }
     }
 
+    public ResponseEntity<Course> addCourse(Course course) {
+       try {
+           return new ResponseEntity<>(courseRepository.insert(course), HttpStatus.OK);
+       } catch (Exception e) {
+           return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+       }
+    }
 }
