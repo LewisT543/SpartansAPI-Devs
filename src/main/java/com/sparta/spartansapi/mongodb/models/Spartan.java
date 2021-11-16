@@ -2,6 +2,7 @@ package com.sparta.spartansapi.mongodb.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -15,6 +16,7 @@ public class Spartan {
     private Date start_date;
     private Date end_date;
     private String course;
+
     private String stream;
     private String email;
 
