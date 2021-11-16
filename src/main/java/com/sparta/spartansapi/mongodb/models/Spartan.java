@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.Locale;
 
 @Document(collection = "spartans")
@@ -14,13 +15,14 @@ public class Spartan {
     @Indexed private String firstName;
     @Indexed private String middleName;
     @Indexed private String lastName;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private Course course;
+    private Date startDate;
+    private Date endDate;
+    private String course;
     private String stream;
     private String email;
 
-    public Spartan(String firstName, String middleName, String lastName, LocalDate startDate, Course course, String stream, String email) {
+    public Spartan(String firstName, String middleName, String lastName, Date startDate,
+                   String course, String stream, String email, Date endDate) {
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
@@ -28,14 +30,7 @@ public class Spartan {
         this.course = course;
         this.stream = stream;
         this.email = email;
-        setEndDate();
-    }
-
-    private void setEndDate() {
-        if (course.getName().toLowerCase(Locale.ROOT).contains("engineering"))
-            this.endDate = this.getStartDate().plus(8, ChronoUnit.WEEKS);
-        else
-            this.endDate = this.getStartDate().plus(5, ChronoUnit.WEEKS);
+        this.endDate = endDate;
     }
 
     public String getId() {
@@ -70,27 +65,27 @@ public class Spartan {
         this.lastName = lastName;
     }
 
-    public LocalDate getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
-    public Course getCourse() {
+    public String getCourse() {
         return course;
     }
 
-    public void setCourse(Course course) {
+    public void setCourse(String course) {
         this.course = course;
     }
 
