@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -29,11 +30,23 @@ public class CourseService {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
     public List<Course> getByCourseName(String name) {
         return courseRepository.getCoursesByCourseNameContains(name);
+    }
+
+    public ResponseEntity<Course> updateStream(String id, Course courseParam){
+        Optional<Course> courseData = courseRepository.findById(id);
+        if (courseData.isPresent()){
+            Course course = courseData.get();
+            course.setCourseName(courseParam.getCourseName());
+            course.setCourseDuration(courseParam.getCourseDuration());
+            return new ResponseEntity<>(courseRepository.save(course), HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }
