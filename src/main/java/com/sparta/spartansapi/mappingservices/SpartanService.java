@@ -4,6 +4,8 @@ import com.sparta.spartansapi.mongodb.models.Spartan;
 import com.sparta.spartansapi.mongodb.repos.SpartanRepository;
 import com.sparta.spartansapi.utils.Utilities;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.TextCriteria;
@@ -157,13 +159,14 @@ public class SpartanService {
 //    }
 
     public ResponseEntity<?>getSpartansByFullTextSearch(String text) {
-        TextCriteria textCriteria = TextCriteria
-                .forDefaultLanguage()
-                .matchingAny(text);
-        Query byFreeText = TextQuery.queryText(textCriteria)
-                .sortByScore();
+//        TextCriteria textCriteria = TextCriteria
+//                .forDefaultLanguage()
+//                .matching(text);
+//        Query byFreeText = TextQuery.queryText(textCriteria)
+//                .sortByScore();
         try {
-            List<Spartan> spartans = mongoTemplate.find(byFreeText, Spartan.class);
+            List<Spartan> spartans = spartanRepository.findAll(getMatcherExample(text));
+//            List<Spartan> spartans = mongoTemplate.find(byFreeText, Spartan.class);
             if(spartans.isEmpty())
                 return ResponseEntity
                         .status(HttpStatus.NO_CONTENT)
@@ -173,6 +176,18 @@ public class SpartanService {
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private Example<Spartan> getMatcherExample(String text) {
+        Spartan spartan = new Spartan();
+        spartan.setFirstName(text);
+        spartan.setLastName(text);
+        spartan.setMiddleName(text);
+        ExampleMatcher customExampleMatcher = ExampleMatcher.matchingAny()
+                .withMatcher("firstName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("lastName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("middleName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
+        return Example.of(spartan, customExampleMatcher);
     }
 
     public ResponseEntity<?> updateSpartanById(String id, Spartan spartan) {
