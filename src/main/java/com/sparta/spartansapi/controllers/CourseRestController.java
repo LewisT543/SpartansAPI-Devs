@@ -39,6 +39,6 @@ public class CourseRestController {
 
     @PutMapping(value = "/update/{id}")
     public ResponseEntity<Course> updateCourseById(@PathVariable("id") String id, @RequestBody Course course) {
-        return courseService.updateStream(id, course);
+        return courseService.updateCourse(id, course);
     }
 }

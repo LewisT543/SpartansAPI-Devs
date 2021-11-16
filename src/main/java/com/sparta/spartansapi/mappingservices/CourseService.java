@@ -45,7 +45,7 @@ public class CourseService {
         }
     }
 
-    public ResponseEntity<Course> updateStream(String id, Course courseParam){
+    public ResponseEntity<Course> updateCourse(String id, Course courseParam){
         Optional<Course> courseData = courseRepository.findById(id);
         if (courseData.isPresent()){
             Course course = courseData.get();
