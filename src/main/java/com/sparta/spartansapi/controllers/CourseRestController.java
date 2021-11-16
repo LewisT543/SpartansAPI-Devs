@@ -23,8 +23,8 @@ public class CourseRestController {
     }
 
     @GetMapping("/all")
-    public List<Course> getAllCourses() {
-        return null;
+    public ResponseEntity<List<Course>> getAllCourses() {
+        return courseService.getAllCourses();
     }
 
     @GetMapping(params = {"coursename"})

@@ -57,4 +57,12 @@ public class CourseService {
         }
     }
 
+    public ResponseEntity<List<Course>> getAllCourses() {
+        try {
+            return new ResponseEntity<>(courseRepository.findAll(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
