@@ -21,6 +21,10 @@ public class SpartanDTO {
         this.end_date = end_date;
     }
 
+    public SpartanDTO() {
+
+    }
+
     public String getFirst_name() {
         return first_name;
     }
