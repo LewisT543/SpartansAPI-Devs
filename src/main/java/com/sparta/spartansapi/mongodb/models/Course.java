@@ -22,6 +22,18 @@ public class Course {
         }
     }
 
+    public Course(String name) {
+        this.name = name;
+
+        if (name.contains("Business")) {
+            duration = 5;
+        } else if (name.contains("Engineering")) {
+            duration = 11;
+        } else {  // should throw an exception
+            duration = null;
+        }
+    }
+
     public String get_id() {
         return _id;
     }
