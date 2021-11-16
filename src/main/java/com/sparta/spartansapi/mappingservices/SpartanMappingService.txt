@@ -93,15 +93,7 @@ public class SpartanMappingService {
         }
     }
 
-    public ResponseEntity<Spartan> addNewSpartan(Spartan spartan){
-        try {
-            Spartan newSpartan = spartanRepository.insert(new Spartan(spartan.getFirstName(), spartan.getMiddleName(), spartan.getLastName(),
-                    spartan.getStartDate(), spartan.getCourse(), spartan.getStream(), spartan.getEmail()));
-            return new ResponseEntity<>(newSpartan, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+
 
     public ResponseEntity<Spartan> updateSpartanById(String id, Spartan spartan) {
         Optional<Spartan> foundSpartan = spartanRepository.findById(id);
