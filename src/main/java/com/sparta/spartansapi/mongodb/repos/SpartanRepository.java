@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface SpartanRepository extends MongoRepository<Spartan, String> {
 
+    /*
     List<Spartan> getSpartansByFirstName(String firstName);
     List<Spartan> getSpartansByLastName(String lastName);
     List<Spartan> getSpartansByStartDateAfter(LocalDate startDate);
@@ -16,5 +17,7 @@ public interface SpartanRepository extends MongoRepository<Spartan, String> {
     void addNewSpartan(Spartan spartan);
     void updateSpartanById(String id, Spartan spartan);
     void deleteSpartanById(String id);
+    
+     */
 
 }
