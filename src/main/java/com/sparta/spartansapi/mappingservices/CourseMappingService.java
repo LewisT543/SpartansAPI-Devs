@@ -1,4 +1,4 @@
-package com.sparta.spartansapi.mappingservices.classes;
+package com.sparta.spartansapi.mappingservices;
 
 import com.sparta.spartansapi.mappingservices.interfaces.CourseService;
 

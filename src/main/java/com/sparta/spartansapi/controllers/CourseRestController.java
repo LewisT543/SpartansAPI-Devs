@@ -1,7 +1,9 @@
 package com.sparta.spartansapi.controllers;
 
+import com.sparta.spartansapi.mappingservices.CourseMappingService;
 import com.sparta.spartansapi.mappingservices.classes.CourseMappingService;
 import com.sparta.spartansapi.mongodb.repos.CourseRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
