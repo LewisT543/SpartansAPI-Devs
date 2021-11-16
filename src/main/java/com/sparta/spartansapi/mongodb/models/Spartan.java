@@ -5,93 +5,86 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.Locale;
+import java.util.Date;
 
 @Document(collection = "spartans")
 public class Spartan {
-    @Id private String id;
-    @TextIndexed(weight=2) private String firstName;
-    @TextIndexed(weight=1) private String middleName;
-    @TextIndexed(weight=3) private String lastName;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private Course course;
+    @Id private String _id;
+    @Indexed private String first_name;
+    @Indexed private String middle_name;
+    @Indexed private String last_name;
+    private Date start_date;
+    private Date end_date;
+    private String course;
+
     private String stream;
     private String email;
 
-    public Spartan(String firstName, String middleName, String lastName, LocalDate startDate, Course course, String stream, String email) {
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.startDate = startDate;
+    public Spartan(String first_name, String middle_name, String last_name, Date start_date,
+                   String course, String stream, String email, Date end_date) {
+        this.first_name = first_name;
+        this.middle_name = middle_name;
+        this.last_name = last_name;
+        this.start_date = start_date;
         this.course = course;
         this.stream = stream;
         this.email = email;
-        setEndDate();
-    }
-
-    private void setEndDate() {
-        if (course.getName().toLowerCase(Locale.ROOT).contains("engineering"))
-            this.endDate = this.getStartDate().plus(8, ChronoUnit.WEEKS).plus(2, ChronoUnit.YEARS);
-        else
-            this.endDate = this.getStartDate().plus(5, ChronoUnit.WEEKS).plus(2, ChronoUnit.YEARS);
+        this.end_date = end_date;
     }
 
     public String getId() {
-        return id;
+        return _id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this._id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirst_name() {
+        return first_name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
     }
 
-    public String getMiddleName() {
-        return middleName;
+    public String getMiddle_name() {
+        return middle_name;
     }
 
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
+    public void setMiddle_name(String middle_name) {
+        this.middle_name = middle_name;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getLast_name() {
+        return last_name;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
+    public Date getStart_date() {
+        return start_date;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+    public void setStart_date(Date start_date) {
+        this.start_date = start_date;
     }
 
-    public LocalDate getEndDate() {
-        return endDate;
+    public Date getEnd_date() {
+        return end_date;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public void setEnd_date(Date end_date) {
+        this.end_date = end_date;
     }
 
-    public Course getCourse() {
+    public String getCourse() {
         return course;
     }
 
-    public void setCourse(Course course) {
+    public void setCourse(String course) {
         this.course = course;
     }
 
