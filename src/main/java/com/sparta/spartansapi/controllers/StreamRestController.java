@@ -1,15 +1,10 @@
 package com.sparta.spartansapi.controllers;
 
-import com.sparta.spartansapi.dtos.StreamDTO;
 import com.sparta.spartansapi.mappingservices.StreamService;
 import com.sparta.spartansapi.mongodb.models.Stream;
-import com.sparta.spartansapi.mongodb.repos.StreamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/streams")
@@ -33,18 +28,18 @@ public class StreamRestController {
     }
 
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<?> deleteCourseById(@PathVariable("id") String id) {
+    public ResponseEntity<?> deleteStreamById(@PathVariable("id") String id) {
         return streamService.deleteById(id);
     }
 
     @GetMapping(params = {"name"})
-    public ResponseEntity<?> getAllCoursesByName(@RequestParam String name) {
+    public ResponseEntity<?> getAllStreamsByName(@RequestParam String name) {
         return streamService.findByName(name);
     }
 
     @PostMapping("/add")
     public ResponseEntity<?> addCourse(@RequestBody Stream stream) {
-        return streamService.addCourse(stream);
+        return streamService.addStream(stream);
     }
 
 

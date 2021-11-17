@@ -68,7 +68,7 @@ public class StreamService {
         }
     }
 
-    public ResponseEntity<?> addCourse(Stream stream) {
+    public ResponseEntity<?> addStream(Stream stream) {
         try {
             streamRepository.insert(stream);
             return ErrorCodes.NEW_RECORD;
