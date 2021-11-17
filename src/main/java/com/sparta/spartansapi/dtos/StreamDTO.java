@@ -1,6 +1,6 @@
 package com.sparta.spartansapi.dtos;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class StreamDTO {
     private String streamname;
     private Integer streamduration;

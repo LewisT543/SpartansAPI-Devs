@@ -28,23 +28,22 @@ public class StreamRestController {
     }
 
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<Stream> updateStreamById(@PathVariable("id") String id, @RequestBody Stream stream)
-    {
+    public ResponseEntity<?> updateStreamById(@PathVariable("id") String id, @RequestBody Stream stream) {
         return streamService.updateStream(id,stream);
     }
 
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<HttpStatus> deleteCourseById(@PathVariable("id") String id) {
+    public ResponseEntity<?> deleteCourseById(@PathVariable("id") String id) {
         return streamService.deleteById(id);
     }
 
-    @GetMapping(params = {"streamname"})
-    public ResponseEntity<List<Stream>> getAllCoursesByName(@RequestParam String streamname) {
-        return streamService.findByName(streamname);
+    @GetMapping(params = {"name"})
+    public ResponseEntity<?> getAllCoursesByName(@RequestParam String name) {
+        return streamService.findByName(name);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Stream> addCourse(@RequestBody Stream stream) {
+    public ResponseEntity<?> addCourse(@RequestBody Stream stream) {
         return streamService.addCourse(stream);
     }
 

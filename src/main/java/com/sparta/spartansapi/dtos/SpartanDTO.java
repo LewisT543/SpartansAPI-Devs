@@ -4,6 +4,7 @@ import com.sparta.spartansapi.utils.Utilities;
 
 import java.util.Date;
 
+@Deprecated(forRemoval = true)
 public class SpartanDTO {
     private String first_name, last_name;
     private String middle_name, course, stream, email;
