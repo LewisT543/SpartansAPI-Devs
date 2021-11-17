@@ -25,7 +25,7 @@ public class StreamService {
         try {
             List<Stream> streams = new ArrayList<>(streamRepository.findAll());
             if(streams.isEmpty())
-                return ErrorCodes.NO_SPARTANS_FOUND;
+                return ErrorCodes.NO_RECORDS_FOUND;
             return new ResponseEntity<>(streams, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

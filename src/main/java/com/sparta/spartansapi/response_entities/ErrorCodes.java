@@ -24,7 +24,7 @@ public final class ErrorCodes {
             .body("Record deleted");
 
     public static final ResponseEntity NEW_RECORD = ResponseEntity
-            .status(HttpStatus.OK)
+            .status(HttpStatus.CREATED)
             .body("New record created");
 
     public static final ResponseEntity RECORD_UPDATED = ResponseEntity
