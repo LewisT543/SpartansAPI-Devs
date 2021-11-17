@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "courses")
 public class Course {
-    @Id private String _id;
+    @Id private String id;
     private String name;
 
     public Course(String name) {
@@ -14,12 +14,12 @@ public class Course {
 
     public Course() { }
 
-    public String get_id() {
-        return _id;
+    public String getId() {
+        return id;
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

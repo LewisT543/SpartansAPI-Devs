@@ -153,7 +153,7 @@ public class SpartanService {
     public ResponseEntity<?> updateSpartanById(String id, Spartan spartan) {
         Optional<Spartan> foundSpartan = spartanRepository.findById(id);
            if (foundSpartan.isPresent()) {
-            Spartan updatedSpartan = new Spartan(spartan.getFirstName(), spartan.getMiddleName(), spartan.getLastName(),
+            Spartan updatedSpartan = new Spartan(spartan.getId(), spartan.getFirstName(), spartan.getMiddleName(), spartan.getLastName(),
                     spartan.getStartDate(), spartan.getCourse(), spartan.getStream(), spartan.getEmail(),
                     Utilities.calculateEndDate(spartan.getStartDate(), spartan.getStream()));
             return new ResponseEntity<>(spartanRepository.save(updatedSpartan), HttpStatus.OK);

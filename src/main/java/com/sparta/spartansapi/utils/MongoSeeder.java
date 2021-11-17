@@ -51,7 +51,9 @@ public class MongoSeeder {
                 JSONObject stream = (JSONObject) spartan.get("stream");
                 Stream newStream = new Stream((String)stream.get("name"), (Long)stream.get("duration"));
                 Date startDate = Utilities.stringToDate((String)spartan.get("startDate"));
-                Spartan newSpartan = new Spartan((String)spartan.get("firstName"),
+                Spartan newSpartan = new Spartan(
+                        (String)spartan.get("id"),
+                        (String)spartan.get("firstName"),
                         (String)spartan.get("middleName"),
                         (String)spartan.get("lastName"),
                         startDate,
