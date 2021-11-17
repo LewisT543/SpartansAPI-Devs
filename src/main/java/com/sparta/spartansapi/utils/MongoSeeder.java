@@ -43,7 +43,7 @@ public class MongoSeeder {
         JSONParser parser = new JSONParser();
         List<Spartan> spartans = new ArrayList<>();
         try {
-            JSONArray array = (JSONArray) parser.parse(new FileReader("src/main/resources/data/spartans.json"));
+            JSONArray array = (JSONArray) parser.parse(new FileReader("src/main/java/com/sparta/spartansapi/data/spartans.json"));
             for (Object o : array) {
                 JSONObject spartan = (JSONObject) o;
                 JSONObject course = (JSONObject) spartan.get("course");
@@ -72,7 +72,7 @@ public class MongoSeeder {
         JSONParser parser = new JSONParser();
         List<Course> courses = new ArrayList<>();
         try {
-            JSONArray array = (JSONArray) parser.parse(new FileReader("src/main/resources/data/courses.json"));
+            JSONArray array = (JSONArray) parser.parse(new FileReader("src/main/java/com/sparta/spartansapi/data/courses.json"));
             for (Object o : array) {
                 JSONObject course = (JSONObject) o;
                 Course newCourse = new Course((String)course.get("name"));
@@ -88,7 +88,7 @@ public class MongoSeeder {
         JSONParser parser = new JSONParser();
         List<Stream> streams = new ArrayList<>();
         try {
-            JSONArray array = (JSONArray) parser.parse(new FileReader("src/main/resources/data/streams.json"));
+            JSONArray array = (JSONArray) parser.parse(new FileReader("src/main/java/com/sparta/spartansapi/data/streams.json"));
             for (Object o : array) {
                 JSONObject stream = (JSONObject) o;
                 Stream newStream = new Stream((String)stream.get("name"), (Long)stream.get("duration"));
