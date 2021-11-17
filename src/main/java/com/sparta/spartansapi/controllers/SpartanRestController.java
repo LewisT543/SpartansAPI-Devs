@@ -40,11 +40,10 @@ public class SpartanRestController {
             return spartanService.getSpartansByStartDateAfter(Utilities.stringToDate(startdate));
         else
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-
     }
 
     @GetMapping(value="/spartans/range", params={"dateafter", "datebefore"})
-    public ResponseEntity<?> getSpartansByStartDate(@RequestParam String dateafter,
+    public ResponseEntity<?> getSpartansByStartDateBetween(@RequestParam String dateafter,
                                                     @RequestParam String datebefore) {
         if ((Utilities.stringToDate(dateafter) != null) && (Utilities.stringToDate(datebefore) != null)) {
             return spartanService.getSpartansByStartDateBetween(Utilities.stringToDate(dateafter),
@@ -53,15 +52,15 @@ public class SpartanRestController {
             return new ResponseEntity<>(null, HttpStatus.CHECKPOINT);
     }
 
-//    @GetMapping(value="/spartans", params={"course"})
-//    public ResponseEntity<?> getSpartansByCourseName(@RequestParam String course) {
-//        return spartanService.getSpartansByCourseName(course);
-//    }
-//
-//    @GetMapping(value="/spartans", params={"stream"})
-//    public ResponseEntity<?> getSpartansByStreamName(@RequestParam String stream) {
-//        return spartanService.getSpartansByStreamName(stream);
-//    }
+    @GetMapping(value="/spartans", params={"course"})
+    public ResponseEntity<?> getSpartansByCourseName(@RequestParam String course) {
+        return spartanService.getSpartansByCourseName(course);
+    }
+
+    @GetMapping(value="/spartans", params={"stream"})
+    public ResponseEntity<?> getSpartansByStreamName(@RequestParam String stream) {
+        return spartanService.getSpartansByStreamName(stream);
+    }
 
     @PostMapping(value="/spartans")
     public ResponseEntity<?> addNewSpartan(@RequestBody Spartan spartan) {
@@ -78,5 +77,4 @@ public class SpartanRestController {
     public ResponseEntity<?> deleteSpartanById(@PathVariable("id") String id) {
         return spartanService.deleteSpartanById(id);
     }
-
 }

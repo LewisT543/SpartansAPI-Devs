@@ -17,15 +17,15 @@ public class Spartan {
     @TextIndexed private String lastName;
     private Date startDate;
     private Date endDate;
-    private String course;
-    private String stream;
+    private Course course;
+    private Stream stream;
     private String email;
     @TextScore Float score;
 
-    public Spartan() { };
+    public Spartan() { }
 
     public Spartan(String firstName, String middleName, String lastName, Date startDate,
-                   String course, String stream, String email, Date endDate) {
+                   Course course, Stream stream, String email, Date endDate) {
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
@@ -35,7 +35,6 @@ public class Spartan {
         this.email = email;
         this.endDate = endDate;
     }
-
 
     public String getId() {
         return id;
@@ -85,19 +84,19 @@ public class Spartan {
         this.endDate = endDate;
     }
 
-    public String getCourse() {
+    public Course getCourse() {
         return course;
     }
 
-    public void setCourse(String course) {
+    public void setCourse(Course course) {
         this.course = course;
     }
 
-    public String getStream() {
+    public Stream getStream() {
         return stream;
     }
 
-    public void setStream(String stream) {
+    public void setStream(Stream stream) {
         this.stream = stream;
     }
 
