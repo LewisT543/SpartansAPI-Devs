@@ -39,17 +39,19 @@ public class SpartanRestController {
         if (Utilities.stringToDate(startdate) != null)
             return spartanService.getSpartansByStartDateAfter(Utilities.stringToDate(startdate));
         else
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Invalid Date entry, please use yyyy-MM-dd format.", HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping(value="/spartans/range", params={"dateafter", "datebefore"})
     public ResponseEntity<?> getSpartansByStartDateBetween(@RequestParam String dateafter,
-                                                    @RequestParam String datebefore) {
+                                                            @RequestParam String datebefore) {
+        if (Utilities.datesAreValid(Utilities.stringToDate(dateafter), Utilities.stringToDate(datebefore)))
+            return new ResponseEntity<>("Invalid Date entry, make sure datebefore is ealier than dateafter.", HttpStatus.BAD_REQUEST);
         if ((Utilities.stringToDate(dateafter) != null) && (Utilities.stringToDate(datebefore) != null)) {
             return spartanService.getSpartansByStartDateBetween(Utilities.stringToDate(dateafter),
                     Utilities.stringToDate(datebefore));
         } else
-            return new ResponseEntity<>(null, HttpStatus.CHECKPOINT);
+            return new ResponseEntity<>("Invalid Date entry, please use yyyy-MM-dd format.", HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping(value="/spartans", params={"course"})

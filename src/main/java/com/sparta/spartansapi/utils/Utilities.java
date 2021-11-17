@@ -50,5 +50,9 @@ public class Utilities {
     public static Date calculateEndDate(Date startDate, Stream stream) {
         return DateUtils.addWeeks(startDate, STREAM_DURATIONS.get(stream.getName()));
     }
+
+    public static boolean datesAreValid(Date startDate, Date endDate) {
+        return startDate.before(endDate);
+    }
 }
 

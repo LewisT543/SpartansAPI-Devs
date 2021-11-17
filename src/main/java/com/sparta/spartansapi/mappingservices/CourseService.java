@@ -23,59 +23,67 @@ public class CourseService {
         this.courseRepository = courseRepository;
     }
 
-    public ResponseEntity<HttpStatus> deleteById(String id) {
+    public ResponseEntity<?> addCourse(Course course) {
         try {
-            courseRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(courseRepository.insert(course), HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Unexpected Server error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    public ResponseEntity<List<Course>> getByCourseName(String name) {
+    public ResponseEntity<?> getAllCourses() {
+        try {
+            List<Course> courses = courseRepository.findAll();
+            if (courses.isEmpty()) {
+                return new ResponseEntity<>("No Courses Found", HttpStatus.OK);
+            } else
+                return new ResponseEntity<>(courseRepository.findAll(), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Unexpected Server error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<?> getByCourseName(String name) {
         try {
             List<Course> courses = courseRepository.getCoursesByNameContains(name);
             if (courses.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(courses, HttpStatus.OK);
+                return new ResponseEntity<>("Cannot Get Course By Name: " + name, HttpStatus.OK);
+            } else
+                return new ResponseEntity<>(courses, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Unexpected Server error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    public ResponseEntity<Course> updateCourse(String id, Course courseParam){
-        Optional<Course> courseData = courseRepository.findById(id);
-        if (courseData.isPresent()){
-            Course course = courseData.get();
-            course.setName(courseParam.getName());
-            return new ResponseEntity<>(courseRepository.save(course), HttpStatus.OK);
-        }
-        else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-
-    public ResponseEntity<Course> addCourse(Course course) {
-       try {
-           return new ResponseEntity<>(courseRepository.insert(course), HttpStatus.OK);
-       } catch (Exception e) {
-           e.printStackTrace();
-           return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-       }
-    }
-
-    public ResponseEntity<List<Course>> getAllCourses() {
+    public ResponseEntity<?> updateCourse(String id, Course courseParam) {
         try {
-            return new ResponseEntity<>(courseRepository.findAll(), HttpStatus.OK);
+            Optional<Course> courseData = courseRepository.findById(id);
+            if (courseData.isPresent()) {
+                Course course = courseData.get();
+                course.setName(courseParam.getName());
+                return new ResponseEntity<>(courseRepository.save(course), HttpStatus.OK);
+            } else
+                return new ResponseEntity<>("Cannot update Course with id:" + id, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Unexpected Server error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-
+    public ResponseEntity<?> deleteById(String id) {
+        try {
+            Optional<Course> foundCourse = courseRepository.findById(id);
+            if (foundCourse.isPresent()) {
+                courseRepository.deleteById(id);
+                return new ResponseEntity<>("Course Deleted with id: " + id, HttpStatus.OK);
+            } else
+                return new ResponseEntity<>("Cannot Delete Course with id: " + id, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Unexpected Server error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

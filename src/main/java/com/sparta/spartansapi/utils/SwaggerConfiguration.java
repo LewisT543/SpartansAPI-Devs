@@ -40,6 +40,6 @@ public class SwaggerConfiguration {
     }
 }
 
-//TODO: Add to ReadMe
+// TODO: Add to ReadMe
 // http://localhost:8080/swagger-ui/#/
 // Might need to run a clean on maven before requesting the above URL
