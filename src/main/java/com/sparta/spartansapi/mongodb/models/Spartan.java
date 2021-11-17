@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.TextScore;
 
 import java.util.Date;
 
@@ -19,6 +20,7 @@ public class Spartan {
     private Course course;
     private Stream stream;
     private String email;
+    @TextScore Float score;
 
     public Spartan() { }
 

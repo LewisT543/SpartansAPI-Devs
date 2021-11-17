@@ -4,6 +4,8 @@ import com.sparta.spartansapi.mongodb.models.Spartan;
 import com.sparta.spartansapi.mongodb.repos.SpartanRepository;
 import com.sparta.spartansapi.utils.Utilities;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.TextCriteria;
@@ -21,14 +23,15 @@ import java.util.Optional;
 @Service
 public class SpartanService {
 
-    @Autowired
     private SpartanRepository spartanRepository;
 
     @Autowired
-    private MongoTemplate mongoTemplate;
+    public SpartanService(SpartanRepository spartanRepository) {
+        this.spartanRepository = spartanRepository;
+    }
 
     public ResponseEntity<Spartan> addNewSpartan(Spartan spartan){
-        // Currently doesn't check for duplicate spartans by First+middle+last names
+        // Currently doesn't check for duplicate spartans
         try {
             Spartan newSpartan = spartanRepository.insert(new Spartan(spartan.getFirstName(), spartan.getMiddleName(), spartan.getLastName(),
                     spartan.getStartDate(), spartan.getCourse(), spartan.getStream(), spartan.getEmail(),
@@ -51,6 +54,18 @@ public class SpartanService {
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<?> getSpartanById(String id) {
+        try {
+            Optional<Spartan> spartan = spartanRepository.findById(id);
+            if (spartan.isEmpty())
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No spartan found");
+            return new ResponseEntity<>(spartan, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected server error");
         }
     }
 
@@ -109,13 +124,8 @@ public class SpartanService {
     }
 
     public ResponseEntity<?>getSpartansByFullTextSearch(String text) {
-        TextCriteria textCriteria = TextCriteria
-                .forDefaultLanguage()
-                .matching(text);
-        Query byFreeText = TextQuery.queryText(textCriteria)
-                .sortByScore();
         try {
-            List<Spartan> spartans = this.mongoTemplate.find(byFreeText, Spartan.class);
+            List<Spartan> spartans = spartanRepository.findAll(getMatcherExample(text));
             if(spartans.isEmpty())
                 return ResponseEntity
                         .status(HttpStatus.NO_CONTENT)
@@ -125,6 +135,19 @@ public class SpartanService {
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    // Helper method for above
+    private Example<Spartan> getMatcherExample(String text) {
+        Spartan spartan = new Spartan();
+        spartan.setFirstName(text);
+        spartan.setLastName(text);
+        spartan.setMiddleName(text);
+        ExampleMatcher customExampleMatcher = ExampleMatcher.matchingAny()
+                .withMatcher("firstName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("lastName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("middleName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
+        return Example.of(spartan, customExampleMatcher);
     }
 
     public ResponseEntity<?> updateSpartanById(String id, Spartan spartan) {
@@ -142,12 +165,10 @@ public class SpartanService {
     public ResponseEntity<?> deleteSpartanById(String id) {
         try {
             spartanRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Cannot delete Spartan");
         }
     }
-
-
 }
