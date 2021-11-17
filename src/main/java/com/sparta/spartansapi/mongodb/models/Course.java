@@ -1,5 +1,6 @@
 package com.sparta.spartansapi.mongodb.models;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,6 +10,11 @@ public class Course {
     private String name;
 
     public Course(String name) {
+        this.name = name;
+    }
+
+    public Course(String id, String name) {
+        this.id = id;
         this.name = name;
     }
 

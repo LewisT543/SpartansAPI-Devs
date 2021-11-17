@@ -1,7 +1,7 @@
 package com.sparta.spartansapi.mongodb.models;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.TextScore;
@@ -11,7 +11,7 @@ import java.util.Date;
 @Document(collection = "spartans")
 public class Spartan {
     @Id
-    private String id;
+    private ObjectId id;
     @TextIndexed private String firstName;
     @TextIndexed private String middleName;
     @TextIndexed private String lastName;
@@ -26,7 +26,7 @@ public class Spartan {
 
     public Spartan(String id, String firstName, String middleName, String lastName, Date startDate,
                    Course course, Stream stream, String email, Date endDate) {
-        this.id = id;
+        this.id = new ObjectId(id);
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
@@ -50,11 +50,11 @@ public class Spartan {
     }
 
     public String getId() {
-        return id;
+        return id.toString();
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.id = new ObjectId(id);
     }
 
     public String getFirstName() {

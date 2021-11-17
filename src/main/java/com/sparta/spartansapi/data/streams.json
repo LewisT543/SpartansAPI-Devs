@@ -30,31 +30,31 @@
   "name": "Data Science"
 },{
   "_id": {
-    "$oid": "61927fa2b0574f2e5c41421g"
+    "$oid": "61927fa2b0574f2e5c41421e"
   },
   "duration": 14,
   "name": "DevOps"
 },{
   "_id": {
-    "$oid": "61927fa2b0574f2e5c41421v"
+    "$oid": "61927fa2b0574f2e5c41421f"
   },
   "duration": 15,
   "name": "Cyber Security"
 },{
   "_id": {
-    "$oid": "61927fa2b0574f2e5c41421k"
+    "$oid": "61927fa2b0574f2e5c41420a"
   },
   "duration": 7,
   "name": "Business Analytics"
 },{
   "_id": {
-    "$oid": "61927fa2b0574f2e5c41421j"
+    "$oid": "61927fa2b0574f2e5c41420b"
   },
   "duration": 7,
   "name": "Test Analysis"
 },{
   "_id": {
-    "$oid": "61927fa2b0574f2e5c41421m"
+    "$oid": "61927fa2b0574f2e5c41420c"
   },
   "duration": 7,
   "name": "Product Owner"
