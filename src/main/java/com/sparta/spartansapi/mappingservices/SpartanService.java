@@ -54,54 +54,6 @@ public class SpartanService {
         }
     }
 
-    public ResponseEntity<?> getAllSpartansByFirstName(String firstName) {
-        System.out.println("ByFirstName sout");
-        System.err.println("Pre-tryCatch byFirstname");
-        try {
-            List<Spartan> spartans = spartanRepository.getSpartansByFirstNameContains(firstName);
-            System.err.println("ByFirstName: Size: " + spartans.size());
-            if(spartans.isEmpty())
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body("No spartans found");
-            return new ResponseEntity<>(spartans, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public ResponseEntity<?> getAllSpartansByLastName(String lastName){
-        try {
-            List<Spartan> spartans = spartanRepository.getSpartansByLastName(lastName);
-            if(spartans.isEmpty())
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body("No spartans found");
-            return new ResponseEntity<>(spartans, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public ResponseEntity<?> getAllSpartansByFirstNameAndLastName(String firstName, String lastName) {
-        System.out.println("byfirst+last sout");
-        System.err.println("Pre-tryCatch byFirstname+Lastname");
-        try {
-            List<Spartan> spartans = spartanRepository.getSpartansByFirstNameAndLastName(firstName, lastName);
-            System.err.println("ByFirstNameAndLastName: Size: " + spartans.size());
-            if(spartans.isEmpty())
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body("No spartans found");
-            return new ResponseEntity<>(spartans, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     public ResponseEntity<?> getSpartansByStartDateAfter(Date startDate) {
         try {
             List<Spartan> spartans = spartanRepository.getSpartansByStartDateAfter(startDate);
@@ -130,31 +82,31 @@ public class SpartanService {
         }
     }
 
-//    public ResponseEntity<?>getSpartansByCourseName(String courseName) {
-//        try {
-//            List<Spartan> spartans = spartanRepository.getSpartansByCourseName(courseName);
-//            if(spartans.isEmpty())
-//                return ResponseEntity
-//                        .status(HttpStatus.NO_CONTENT)
-//                        .body("No spartans found");
-//            return new ResponseEntity<>(spartans, HttpStatus.OK);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-//
-//    public ResponseEntity<?>getSpartansByStreamName(String streamName) {
-//        try {
-//            List<Spartan> spartans = spartanRepository.getSpartansByStreamName(streamName);
-//            if(spartans.isEmpty())
-//                return ResponseEntity
-//                        .status(HttpStatus.NO_CONTENT)
-//                        .body("No spartans found");
-//            return new ResponseEntity<>(spartans, HttpStatus.OK);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    public ResponseEntity<?>getSpartansByCourseName(String courseName) {
+        try {
+            List<Spartan> spartans = spartanRepository.getSpartansByCourseName(courseName);
+            if(spartans.isEmpty())
+                return ResponseEntity
+                        .status(HttpStatus.NO_CONTENT)
+                        .body("No spartans found");
+            return new ResponseEntity<>(spartans, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<?>getSpartansByStreamName(String streamName) {
+        try {
+            List<Spartan> spartans = spartanRepository.getSpartansByStreamName(streamName);
+            if(spartans.isEmpty())
+                return ResponseEntity
+                        .status(HttpStatus.NO_CONTENT)
+                        .body("No spartans found");
+            return new ResponseEntity<>(spartans, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     public ResponseEntity<?>getSpartansByFullTextSearch(String text) {
         TextCriteria textCriteria = TextCriteria
