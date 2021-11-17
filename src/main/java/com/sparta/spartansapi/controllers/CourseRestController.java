@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/courses")
 public class CourseRestController {
 
     private CourseService courseService;
@@ -22,27 +21,27 @@ public class CourseRestController {
         this.courseService = courseService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/courses")
     public ResponseEntity<List<Course>> getAllCourses() {
         return courseService.getAllCourses();
     }
 
-    @GetMapping(params = {"coursename"})
-    public ResponseEntity<List<Course>> getAllCoursesByName(@RequestParam String coursename) {
-        return courseService.getByCourseName(coursename);
+    @GetMapping(value = "/courses", params = {"name"})
+    public ResponseEntity<List<Course>> getAllCoursesByName(@RequestParam String name) {
+        return courseService.getByCourseName(name);
     }
 
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/courses/{id}")
     public ResponseEntity<HttpStatus> deleteCourseById(@PathVariable("id") String id) {
         return courseService.deleteById(id);
     }
 
-    @PutMapping(value = "/update/{id}")
+    @PutMapping(value = "/courses/{id}")
     public ResponseEntity<Course> updateCourseById(@PathVariable("id") String id, @RequestBody Course course) {
         return courseService.updateCourse(id, course);
     }
 
-    @PostMapping("/add")
+    @PostMapping("/courses")
     public ResponseEntity<Course> addCourse(@RequestBody Course course) {
         return courseService.addCourse(course);
     }

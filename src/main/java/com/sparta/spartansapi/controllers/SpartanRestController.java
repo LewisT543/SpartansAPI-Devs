@@ -8,63 +8,33 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
-@RequestMapping("/spartan")
 public class SpartanRestController {
 
-    @Autowired
     private SpartanService spartanService;
 
-    @GetMapping("/all")
+    @Autowired
+    public SpartanRestController(SpartanService spartanService) {
+        this.spartanService = spartanService;
+    }
+
+    @GetMapping("/spartans")
     public ResponseEntity<?> getAllSpartans()  {
         return spartanService.getAllSpartans();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/spartans/{id}")
     public ResponseEntity<?> getSpartansById(@PathVariable String id) {
         return spartanService.getSpartanById(id);
     }
 
-    @GetMapping(value="/", params={"q"})
+    @GetMapping(value="/spartans", params={"q"})
     public ResponseEntity<?> getSpartansByFullTextSearch(@RequestParam String q) {
         return spartanService.getSpartansByFullTextSearch(q);
     }
 
-    @GetMapping(value="/name1", params={"firstname"})
-    public ResponseEntity<?> getSpartansByFirstName(@RequestParam String firstname) {
-        return spartanService.getAllSpartansByFirstName(firstname);
-    }
-
-    @GetMapping(value="/name2", params={"lastname"})
-    public ResponseEntity<?> getSpartansByLastName(@RequestParam String lastname) {
-        return spartanService.getAllSpartansByLastName(lastname);
-    }
-
-    @GetMapping(value="/name3", params={"firstname", "lastname"})
-    public ResponseEntity<?> getSpartansByFirstNameAndLastName(@RequestParam(required = true) String firstname,
-                                                               @RequestParam(required = false) String lastname){
-        return spartanService.getAllSpartansByFirstNameAndLastName(firstname,lastname);
-    }
-
-//    @GetMapping(value="/start", params={"startdate"})
-//    public ResponseEntity<?> getSpartansByStartDate(@RequestParam String startDate) {
-//        if (Utilities.isParseableDate(startDate))
-//            return spartanService.getSpartansByStartDateAfter(Utilities.parseStringToLocalDate(startDate));
-//        else return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-//    }
-//
-//    @GetMapping(value="/range", params={"startdatelower", "startdateupper"})
-//    public ResponseEntity<?> getSpartansByStartDate(@RequestParam String startDateMin,
-//                                                                @RequestParam String startDateMax) {
-//        if (Utilities.isParseableDate(startDateMin) && Utilities.isParseableDate(startDateMax))
-//            return spartanService.getSpartansByStartDateBetween(Utilities.parseStringToLocalDate(startDateMin),
-//                    Utilities.parseStringToLocalDate(startDateMax));
-//        else return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-//    }
-
-    @GetMapping(value="/start", params={"startdate"})
+    @GetMapping(value="/spartans", params={"startdate"})
     public ResponseEntity<?> getSpartansByStartDate(@RequestParam String startdate) {
         if (Utilities.stringToDate(startdate) != null)
             return spartanService.getSpartansByStartDateAfter(Utilities.stringToDate(startdate));
@@ -73,39 +43,38 @@ public class SpartanRestController {
 
     }
 
-    @GetMapping(value="/range", params={"startdatelower", "startdateupper"})
-    public ResponseEntity<?> getSpartansByStartDate(@RequestParam String startdatelower,
-                                                    @RequestParam String startdateupper) {
-        if ((Utilities.stringToDate(startdatelower) != null) && (Utilities.stringToDate(startdateupper) != null)) {
-            return spartanService.getSpartansByStartDateBetween(Utilities.stringToDate(startdatelower),
-                    Utilities.stringToDate(startdateupper));
+    @GetMapping(value="/spartans/range", params={"dateafter", "datebefore"})
+    public ResponseEntity<?> getSpartansByStartDate(@RequestParam String dateafter,
+                                                    @RequestParam String datebefore) {
+        if ((Utilities.stringToDate(dateafter) != null) && (Utilities.stringToDate(datebefore) != null)) {
+            return spartanService.getSpartansByStartDateBetween(Utilities.stringToDate(dateafter),
+                    Utilities.stringToDate(datebefore));
         } else
             return new ResponseEntity<>(null, HttpStatus.CHECKPOINT);
     }
 
-//    @GetMapping(value="/course", params={"name"})
+//    @GetMapping(value="/spartans", params={"course"})
 //    public ResponseEntity<?> getSpartansByCourseName(@RequestParam String course) {
 //        return spartanService.getSpartansByCourseName(course);
 //    }
 //
-//    @GetMapping(value="/stream", params={"name"})
+//    @GetMapping(value="/spartans", params={"stream"})
 //    public ResponseEntity<?> getSpartansByStreamName(@RequestParam String stream) {
 //        return spartanService.getSpartansByStreamName(stream);
 //    }
 
-    @PostMapping(value="/add")
+    @PostMapping(value="/spartans")
     public ResponseEntity<?> addNewSpartan(@RequestBody Spartan spartan) {
         return spartanService.addNewSpartan(spartan);
     }
 
-    //// THIS IS WEIRD ATM ////
-    @PutMapping(value="/update/{id}")
+    @PutMapping(value="/spartans/{id}")
     public ResponseEntity<?> updateSpartanById(@PathVariable("id") String id,
                                                     @RequestBody Spartan spartan) {
         return spartanService.updateSpartanById(id, spartan);
     }
 
-    @DeleteMapping(value="/delete/{id}")
+    @DeleteMapping(value="/spartans/{id}")
     public ResponseEntity<?> deleteSpartanById(@PathVariable("id") String id) {
         return spartanService.deleteSpartanById(id);
     }

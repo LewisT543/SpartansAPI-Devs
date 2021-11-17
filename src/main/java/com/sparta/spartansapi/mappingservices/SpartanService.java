@@ -23,11 +23,12 @@ import java.util.Optional;
 @Service
 public class SpartanService {
 
-    @Autowired
     private SpartanRepository spartanRepository;
 
     @Autowired
-    private MongoTemplate mongoTemplate;
+    public SpartanService(SpartanRepository spartanRepository) {
+        this.spartanRepository = spartanRepository;
+    }
 
     public ResponseEntity<Spartan> addNewSpartan(Spartan spartan){
         // Currently doesn't check for duplicate spartans
@@ -68,53 +69,6 @@ public class SpartanService {
         }
     }
 
-    public ResponseEntity<?> getAllSpartansByFirstName(String firstName) {
-        System.out.println("ByFirstName sout");
-        System.err.println("Pre-tryCatch byFirstname");
-        try {
-            List<Spartan> spartans = spartanRepository.getSpartansByFirstNameContains(firstName);
-            System.err.println("ByFirstName: Size: " + spartans.size());
-            if(spartans.isEmpty())
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body("No spartans found");
-            return new ResponseEntity<>(spartans, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public ResponseEntity<?> getAllSpartansByLastName(String lastName){
-        try {
-            List<Spartan> spartans = spartanRepository.getSpartansByLastName(lastName);
-            if(spartans.isEmpty())
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body("No spartans found");
-            return new ResponseEntity<>(spartans, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public ResponseEntity<?> getAllSpartansByFirstNameAndLastName(String firstName, String lastName) {
-        System.out.println("byfirst+last sout");
-        System.err.println("Pre-tryCatch byFirstname+Lastname");
-        try {
-            List<Spartan> spartans = spartanRepository.getSpartansByFirstNameAndLastName(firstName, lastName);
-            System.err.println("ByFirstNameAndLastName: Size: " + spartans.size());
-            if(spartans.isEmpty())
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body("No spartans found");
-            return new ResponseEntity<>(spartans, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
     public ResponseEntity<?> getSpartansByStartDateAfter(Date startDate) {
         try {
@@ -218,6 +172,4 @@ public class SpartanService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Cannot delete Spartan");
         }
     }
-
-
 }
