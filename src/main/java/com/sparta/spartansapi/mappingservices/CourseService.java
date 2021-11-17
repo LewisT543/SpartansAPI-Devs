@@ -2,6 +2,7 @@ package com.sparta.spartansapi.mappingservices;
 
 import com.sparta.spartansapi.mongodb.models.Course;
 import com.sparta.spartansapi.mongodb.repos.CourseRepository;
+import com.sparta.spartansapi.response_entities.ErrorCodes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,57 +27,60 @@ public class CourseService {
         this.courseRepository = courseRepository;
     }
 
-    public ResponseEntity<HttpStatus> deleteById(String id) {
+    public ResponseEntity<?> deleteById(String id) {
         try {
-            courseRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            if (courseRepository.existsById(id)) {
+                courseRepository.deleteById(id);
+                return ErrorCodes.RECORD_DELETED;
+            } else return ErrorCodes.NO_MATCHES_FOUND;
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    public ResponseEntity<List<Course>> getByCourseName(String name) {
+    public ResponseEntity<?> getByCourseName(String name) {
         try {
             List<Course> courses = courseRepository.getCoursesByNameContains(name);
-            if (courses.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
+            if (courses.isEmpty())
+                return ErrorCodes.NO_MATCHES_FOUND;
             return new ResponseEntity<>(courses, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ErrorCodes.INTERNAL_SERVER_ERROR;
         }
     }
 
-    public ResponseEntity<Course> updateCourse(String id, Course courseParam){
+    public ResponseEntity<?> updateCourse(String id, Course courseParam){
         Optional<Course> courseData = courseRepository.findById(id);
-        if (courseData.isPresent()){
+        if (courseData.isPresent()) {
             Course course = courseData.get();
             course.setName(courseParam.getName());
-            return new ResponseEntity<>(courseRepository.save(course), HttpStatus.OK);
-        }
-        else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+            courseRepository.save(course);
+            return ErrorCodes.RECORD_UPDATED;
+        } else return ErrorCodes.NO_RECORD_FOUND;
     }
 
 
-    public ResponseEntity<Course> addCourse(Course course) {
+    public ResponseEntity<?> addCourse(Course course) {
        try {
-           return new ResponseEntity<>(courseRepository.insert(course), HttpStatus.OK);
+           courseRepository.insert(course);
+           return ErrorCodes.NEW_RECORD;
        } catch (Exception e) {
            e.printStackTrace();
-           return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+           return ErrorCodes.INTERNAL_SERVER_ERROR;
        }
     }
 
-    public ResponseEntity<List<Course>> getAllCourses() {
+    public ResponseEntity<?> getAllCourses() {
         try {
-            return new ResponseEntity<>(courseRepository.findAll(), HttpStatus.OK);
+            List<Course> courses = courseRepository.findAll();
+            if (!courses.isEmpty()) {
+                return ErrorCodes.NO_RECORDS_FOUND;
+            } else return new ResponseEntity<>(courses, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ErrorCodes.INTERNAL_SERVER_ERROR;
         }
     }
 

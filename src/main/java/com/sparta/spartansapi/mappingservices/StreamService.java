@@ -41,16 +41,16 @@ public class StreamService {
             _stream.setDuration(stream.getDuration());
             streamRepository.save(_stream);
             return ErrorCodes.RECORD_UPDATED;
-        } else return ErrorCodes.NO_RECORDS_FOUND;
+        } else return ErrorCodes.NO_RECORD_FOUND;
     }
 
     public ResponseEntity<?> deleteById(String id) {
         try {
             if (streamRepository.existsById(id)) {
                 streamRepository.deleteById(id);
-                return ResponseEntity.status(HttpStatus.OK).body("Record deleted");
+                return ErrorCodes.RECORD_DELETED;
             } else {
-                return ErrorCodes.NO_SPARTAN_MATCHES_FOUND;
+                return ErrorCodes.NO_MATCHES_FOUND;
             }
         } catch (Exception e) {
             return ErrorCodes.INTERNAL_SERVER_ERROR;
@@ -61,7 +61,7 @@ public class StreamService {
         try {
             List<Stream> streams = streamRepository.getStreamsByNameContains(name);
             if (streams.isEmpty())
-                return ErrorCodes.NO_SPARTAN_MATCHES_FOUND;
+                return ErrorCodes.NO_MATCHES_FOUND;
             return new ResponseEntity<>(streams, HttpStatus.OK);
         } catch (Exception e) {
             return ErrorCodes.INTERNAL_SERVER_ERROR;
