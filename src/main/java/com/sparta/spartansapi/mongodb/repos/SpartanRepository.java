@@ -15,9 +15,9 @@ public interface SpartanRepository extends MongoRepository<Spartan, String> {
     List<Spartan> getSpartansByStartDateAfter(Date startDate);
     List<Spartan> getSpartansByStartDateBetween(Date startDateMin, Date startDateMax);
 
-    @Query("{ 'stream.name' : ?0 }")
+    @Query("{ 'stream.name' : {$regex : /.*?0.*/ }}")
     List<Spartan> getSpartansByStreamName(String name);
 
-    @Query("{ 'course.name' : ?0 }")
+    @Query("{ 'course.name' : {$regex : /.*?0.*/ }}")
     List<Spartan> getSpartansByCourseName(String name);
 }

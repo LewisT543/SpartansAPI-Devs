@@ -47,8 +47,8 @@ public class Utilities {
         return df.format(date);
     }
 
-    public static Date calculateEndDate(Date startDate, Stream streamName) {
-        return DateUtils.addWeeks(startDate, STREAM_DURATIONS.get(streamName));
+    public static Date calculateEndDate(Date startDate, Stream stream) {
+        return DateUtils.addWeeks(startDate, STREAM_DURATIONS.get(stream.getName()));
     }
 }
 

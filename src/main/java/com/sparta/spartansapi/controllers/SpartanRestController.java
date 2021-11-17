@@ -43,7 +43,7 @@ public class SpartanRestController {
     }
 
     @GetMapping(value="/spartans/range", params={"dateafter", "datebefore"})
-    public ResponseEntity<?> getSpartansByStartDate(@RequestParam String dateafter,
+    public ResponseEntity<?> getSpartansByStartDateBetween(@RequestParam String dateafter,
                                                     @RequestParam String datebefore) {
         if ((Utilities.stringToDate(dateafter) != null) && (Utilities.stringToDate(datebefore) != null)) {
             return spartanService.getSpartansByStartDateBetween(Utilities.stringToDate(dateafter),
@@ -52,14 +52,14 @@ public class SpartanRestController {
             return new ResponseEntity<>(null, HttpStatus.CHECKPOINT);
     }
 
-    @GetMapping(value="/course", params={"name"})
-    public ResponseEntity<?> getSpartansByCourseName(@RequestParam String name) {
-        return spartanService.getSpartansByCourseName(name);
+    @GetMapping(value="/spartans", params={"course"})
+    public ResponseEntity<?> getSpartansByCourseName(@RequestParam String course) {
+        return spartanService.getSpartansByCourseName(course);
     }
 
-    @GetMapping(value="/stream", params={"name"})
-    public ResponseEntity<?> getSpartansByStreamName(@RequestParam String name) {
-        return spartanService.getSpartansByStreamName(name);
+    @GetMapping(value="/spartans", params={"stream"})
+    public ResponseEntity<?> getSpartansByStreamName(@RequestParam String stream) {
+        return spartanService.getSpartansByStreamName(stream);
     }
 
     @PostMapping(value="/spartans")
@@ -77,5 +77,4 @@ public class SpartanRestController {
     public ResponseEntity<?> deleteSpartanById(@PathVariable("id") String id) {
         return spartanService.deleteSpartanById(id);
     }
-
 }

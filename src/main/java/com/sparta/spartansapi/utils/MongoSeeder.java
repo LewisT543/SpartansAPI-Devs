@@ -46,15 +46,19 @@ public class MongoSeeder {
             JSONArray array = (JSONArray) parser.parse(new FileReader("src/main/resources/data/spartans.json"));
             for (Object o : array) {
                 JSONObject spartan = (JSONObject) o;
+                JSONObject course = (JSONObject) spartan.get("course");
+                Course newCourse = new Course((String)course.get("name"));
+                JSONObject stream = (JSONObject) spartan.get("stream");
+                Stream newStream = new Stream((String)stream.get("name"), (Long)stream.get("duration"));
                 Date startDate = Utilities.stringToDate((String)spartan.get("startDate"));
                 Spartan newSpartan = new Spartan((String)spartan.get("firstName"),
                         (String)spartan.get("middleName"),
                         (String)spartan.get("lastName"),
                         startDate,
-                        (String)spartan.get("course"),
-                        (String)spartan.get("stream"),
+                        newCourse,
+                        newStream,
                         (String)spartan.get("email"),
-                        Utilities.calculateEndDate(startDate, (String)spartan.get("stream"))
+                        Utilities.calculateEndDate(startDate, newStream)
                 );
                 spartans.add(newSpartan);
             }
