@@ -23,27 +23,27 @@ public class CourseRestController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Course>> getAllCourses() {
+    public ResponseEntity<?> getAllCourses() {
         return courseService.getAllCourses();
     }
 
-    @GetMapping(params = {"coursename"})
-    public ResponseEntity<List<Course>> getAllCoursesByName(@RequestParam String coursename) {
-        return courseService.getByCourseName(coursename);
+    @GetMapping(params = {"name"})
+    public ResponseEntity<?> getAllCoursesByName(@RequestParam String name) {
+        return courseService.getByCourseName(name);
     }
 
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<HttpStatus> deleteCourseById(@PathVariable("id") String id) {
+    public ResponseEntity<?> deleteCourseById(@PathVariable("id") String id) {
         return courseService.deleteById(id);
     }
 
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<Course> updateCourseById(@PathVariable("id") String id, @RequestBody Course course) {
+    public ResponseEntity<?> updateCourseById(@PathVariable("id") String id, @RequestBody Course course) {
         return courseService.updateCourse(id, course);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Course> addCourse(@RequestBody Course course) {
+    public ResponseEntity<?> addCourse(@RequestBody Course course) {
         return courseService.addCourse(course);
     }
 }

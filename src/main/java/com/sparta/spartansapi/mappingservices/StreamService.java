@@ -57,7 +57,7 @@ public class StreamService {
         }
     }
 
-    public ResponseEntity<?> findByName(String name){
+    public ResponseEntity<?> findByName(String name) {
         try {
             List<Stream> streams = streamRepository.getStreamsByNameContains(name);
             if (streams.isEmpty())
