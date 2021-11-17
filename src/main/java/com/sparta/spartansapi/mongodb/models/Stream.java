@@ -16,6 +16,12 @@ public class Stream {
         this.duration = duration;
     }
 
+    public Stream(String id, String name, Long duration) {
+        this.id = id;
+        this.name = name;
+        this.duration = duration;
+    }
+
     public String getId() {
         return id;
     }

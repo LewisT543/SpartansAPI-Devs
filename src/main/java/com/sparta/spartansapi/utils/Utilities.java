@@ -1,5 +1,6 @@
 package com.sparta.spartansapi.utils;
 
+import com.sparta.spartansapi.mongodb.models.Stream;
 import org.apache.commons.lang3.time.DateUtils;
 
 import java.text.DateFormat;
@@ -46,8 +47,8 @@ public class Utilities {
         return df.format(date);
     }
 
-    public static Date calculateEndDate(Date startDate, String streamName) {
-        return DateUtils.addWeeks(startDate, STREAM_DURATIONS.get(streamName));
+    public static Date calculateEndDate(Date startDate, Stream stream) {
+        return DateUtils.addWeeks(startDate, STREAM_DURATIONS.get(stream.getName()));
     }
 }
 

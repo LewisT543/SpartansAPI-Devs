@@ -1,7 +1,7 @@
 package com.sparta.spartansapi.mongodb.models;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.TextScore;
@@ -11,21 +11,22 @@ import java.util.Date;
 @Document(collection = "spartans")
 public class Spartan {
     @Id
-    private String id;
+    private ObjectId id;
     @TextIndexed private String firstName;
     @TextIndexed private String middleName;
     @TextIndexed private String lastName;
     private Date startDate;
     private Date endDate;
-    private String course;
-    private String stream;
+    private Course course;
+    private Stream stream;
     private String email;
     @TextScore Float score;
 
-    public Spartan() { };
+    public Spartan() { }
 
-    public Spartan(String firstName, String middleName, String lastName, Date startDate,
-                   String course, String stream, String email, Date endDate) {
+    public Spartan(String id, String firstName, String middleName, String lastName, Date startDate,
+                   Course course, Stream stream, String email, Date endDate) {
+        this.id = new ObjectId(id);
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
@@ -36,13 +37,24 @@ public class Spartan {
         this.endDate = endDate;
     }
 
+    public Spartan(String firstName, String middleName, String lastName, Date startDate,
+                   Course course, Stream stream, String email, Date endDate) {
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.startDate = startDate;
+        this.course = course;
+        this.stream = stream;
+        this.email = email;
+        this.endDate = endDate;
+    }
 
     public String getId() {
-        return id;
+        return id.toString();
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.id = new ObjectId(id);
     }
 
     public String getFirstName() {
@@ -85,19 +97,19 @@ public class Spartan {
         this.endDate = endDate;
     }
 
-    public String getCourse() {
+    public Course getCourse() {
         return course;
     }
 
-    public void setCourse(String course) {
+    public void setCourse(Course course) {
         this.course = course;
     }
 
-    public String getStream() {
+    public Stream getStream() {
         return stream;
     }
 
-    public void setStream(String stream) {
+    public void setStream(Stream stream) {
         this.stream = stream;
     }
 

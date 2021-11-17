@@ -1,0 +1,120 @@
+[{
+  "_id": {
+    "$oid": "61928452b0574f2e5c41422e"
+  },
+  "firstName": "Karina",
+  "lastName": "Talibzhanova",
+  "middleName": null,
+  "startDate": "2021-09-05",
+  "course": {
+    "name": "Engineering 95"
+  },
+  "stream": {
+    "duration": 11,
+    "name": "Java Dev"
+  },
+  "email": "KTalibzhanova@spartaglobal.com",
+  "endDate": "2023-11-19"
+},{
+  "_id": {
+    "$oid": "619284b9b0574f2e5c41422f"
+  },
+  "firstName": "Bahir",
+  "lastName": "Taraki",
+  "middleName": null,
+  "startDate": "2021-09-05",
+  "course": {
+    "name": "Engineering 96"
+  },
+  "stream": {
+    "duration": 11,
+    "name": "Java Dev"
+  },
+  "email": "BTaraki@spartaglobal.com",
+  "endDate": "2023-11-19"
+},{
+  "_id": {
+    "$oid": "619284e0b0574f2e5c414230"
+  },
+  "firstName": "Denis",
+  "lastName": "Neagu",
+  "middleName": "Constantin",
+  "startDate": "2021-09-05",
+  "course": {
+    "name": "Engineering 96"
+  },
+  "stream": {
+    "duration": 11,
+    "name": "Java Dev"
+  },
+  "email": "dneagu@spartaglobal.com",
+  "endDate": "2023-11-19"
+},{
+  "_id": {
+    "$oid": "6192854ab0574f2e5c414231"
+  },
+  "firstName": "Lewis",
+  "lastName": "Thornton",
+  "middleName": "Alexander",
+  "startDate": "2021-09-05",
+  "course": {
+    "name": "Engineering 95"
+  },
+  "stream": {
+    "duration": 11,
+    "name": "Java Dev"
+  },
+  "email": "lthornton@spartaglobal.com",
+  "endDate": "2023-11-19"
+},{
+  "_id": {
+    "$oid": "61928575b0574f2e5c414232"
+  },
+  "firstName": "Edmund",
+  "lastName": "Ackah",
+  "middleName": "Jefferson",
+  "startDate": "2021-09-05",
+  "course": {
+    "name": "Engineering 95"
+  },
+  "stream": {
+    "duration": 11,
+    "name": "Java Dev"
+  },
+  "email": "eackah@spartaglobal.com",
+  "endDate": "2023-11-19"
+},{
+  "_id": {
+    "$oid": "61928602b0574f2e5c414233"
+  },
+  "firstName": "Lewis",
+  "lastName": "Smith",
+  "middleName": null,
+  "startDate": "2022-09-05",
+  "course": {
+    "name": "Business 67"
+  },
+  "stream": {
+    "duration": 7,
+    "name": "Business Analytics"
+  },
+  "email": "lsmith@spartaglobal.com",
+  "endDate": "2024-11-19"
+},{
+  "_id": {
+    "$oid": "619292e7b0574f2e5c41424d"
+  },
+  "firstName": "Luigi",
+  "lastName": "Puma",
+  "middleName": "Vincenzo",
+  "startDate": "2021-09-05",
+  "course": {
+    "name": "Engineering 96"
+  },
+  "stream": {
+    "duration": 11,
+    "name": "Java SDET"
+  },
+  "email": "lpuma@spartaglobal.com",
+  "endDate": "2023-11-19"
+}]

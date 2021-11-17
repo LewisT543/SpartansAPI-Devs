@@ -1,0 +1,61 @@
+[{
+  "_id": {
+    "$oid": "61927e05b0574f2e5c414219"
+  },
+  "name": "C# SDET",
+  "duration": 12
+},{
+  "_id": {
+    "$oid": "61927ee5b0574f2e5c41421a"
+  },
+  "name": "C# Dev",
+  "duration": 11
+},{
+  "_id": {
+    "$oid": "61927f2db0574f2e5c41421b"
+  },
+  "duration": 10,
+  "name": "Java SDET"
+},{
+  "_id": {
+    "$oid": "61927f81b0574f2e5c41421c"
+  },
+  "duration": 10,
+  "name": "Java Dev"
+},{
+  "_id": {
+    "$oid": "61927fa2b0574f2e5c41421d"
+  },
+  "duration": 13,
+  "name": "Data Science"
+},{
+  "_id": {
+    "$oid": "61927fa2b0574f2e5c41421e"
+  },
+  "duration": 14,
+  "name": "DevOps"
+},{
+  "_id": {
+    "$oid": "61927fa2b0574f2e5c41421f"
+  },
+  "duration": 15,
+  "name": "Cyber Security"
+},{
+  "_id": {
+    "$oid": "61927fa2b0574f2e5c41420a"
+  },
+  "duration": 7,
+  "name": "Business Analytics"
+},{
+  "_id": {
+    "$oid": "61927fa2b0574f2e5c41420b"
+  },
+  "duration": 7,
+  "name": "Test Analysis"
+},{
+  "_id": {
+    "$oid": "61927fa2b0574f2e5c41420c"
+  },
+  "duration": 7,
+  "name": "Product Owner"
+}]

@@ -3,6 +3,7 @@ package com.sparta.spartansapi.utils;
 import com.sparta.spartansapi.mongodb.models.Course;
 import com.sparta.spartansapi.mongodb.models.Stream;
 import com.sparta.spartansapi.mongodb.models.Spartan;
+import org.bson.types.ObjectId;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -43,18 +44,31 @@ public class MongoSeeder {
         JSONParser parser = new JSONParser();
         List<Spartan> spartans = new ArrayList<>();
         try {
-            JSONArray array = (JSONArray) parser.parse(new FileReader("src/main/resources/data/spartans.json"));
+            JSONArray array = (JSONArray) parser.parse(new FileReader("src/main/java/com/sparta/spartansapi/data/spartans.json"));
             for (Object o : array) {
                 JSONObject spartan = (JSONObject) o;
+
+                JSONObject course = (JSONObject) spartan.get("course");
+                Course newCourse = new Course((String)course.get("name"));
+
+                JSONObject stream = (JSONObject) spartan.get("stream");
+                Stream newStream = new Stream((String)stream.get("name"), (Long)stream.get("duration"));
+
                 Date startDate = Utilities.stringToDate((String)spartan.get("startDate"));
-                Spartan newSpartan = new Spartan((String)spartan.get("firstName"),
+
+                JSONObject id = (JSONObject) spartan.get("_id");
+                String idString = (String)id.get("$oid");
+
+                Spartan newSpartan = new Spartan(
+                        idString,
+                        (String)spartan.get("firstName"),
                         (String)spartan.get("middleName"),
                         (String)spartan.get("lastName"),
                         startDate,
-                        (String)spartan.get("course"),
-                        (String)spartan.get("stream"),
+                        newCourse,
+                        newStream,
                         (String)spartan.get("email"),
-                        Utilities.calculateEndDate(startDate, (String)spartan.get("stream"))
+                        Utilities.calculateEndDate(startDate, newStream)
                 );
                 spartans.add(newSpartan);
             }
@@ -68,10 +82,11 @@ public class MongoSeeder {
         JSONParser parser = new JSONParser();
         List<Course> courses = new ArrayList<>();
         try {
-            JSONArray array = (JSONArray) parser.parse(new FileReader("src/main/resources/data/courses.json"));
+            JSONArray array = (JSONArray) parser.parse(new FileReader("src/main/java/com/sparta/spartansapi/data/courses.json"));
             for (Object o : array) {
                 JSONObject course = (JSONObject) o;
-                Course newCourse = new Course((String)course.get("name"));
+                Course newCourse = new Course(
+                        (String)course.get("name"));
                 courses.add(newCourse);
             }
         } catch (ParseException | IOException e) {
@@ -84,10 +99,12 @@ public class MongoSeeder {
         JSONParser parser = new JSONParser();
         List<Stream> streams = new ArrayList<>();
         try {
-            JSONArray array = (JSONArray) parser.parse(new FileReader("src/main/resources/data/streams.json"));
+            JSONArray array = (JSONArray) parser.parse(new FileReader("src/main/java/com/sparta/spartansapi/data/streams.json"));
             for (Object o : array) {
                 JSONObject stream = (JSONObject) o;
-                Stream newStream = new Stream((String)stream.get("name"), (Long)stream.get("duration"));
+                Stream newStream = new Stream(
+                        (String)stream.get("name"),
+                        (Long)stream.get("duration"));
                 streams.add(newStream);
             }
         } catch (ParseException | IOException e) {
