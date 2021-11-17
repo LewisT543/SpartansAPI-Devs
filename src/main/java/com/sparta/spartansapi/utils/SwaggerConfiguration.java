@@ -26,13 +26,20 @@ public class SwaggerConfiguration {
                 .apiInfo(apiInfo());
     }
 
+    /**
+     * Fill out the fields to display desired information which will appear at the top of the documentation
+     */
     private ApiInfo apiInfo() {
         return new ApiInfo(
                 "Spartans-API",
                 "API which contains Spartan trainee information",
-                "API TOS",
-                "Terms of service",
-                new Contact("null", "null", "null"),
-                "License of API", "API license URL", Collections.emptyList());
+                "",
+                "",
+                new Contact("", "", ""),
+                "", "", Collections.emptyList());
     }
 }
+
+//TODO: Add to ReadMe
+// http://localhost:8080/swagger-ui/#/
+// Might need to run a clean on maven before requesting the above URL
