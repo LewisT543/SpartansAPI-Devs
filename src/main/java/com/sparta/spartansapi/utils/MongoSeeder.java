@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.index.TextIndexDefinition;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -30,6 +31,12 @@ public class MongoSeeder {
         mongoTemplate.insertAll(spartans);
         mongoTemplate.insertAll(courses);
         mongoTemplate.insertAll(streams);
+    }
+
+    public void indexFields() {
+        TextIndexDefinition textIndex = new TextIndexDefinition.TextIndexDefinitionBuilder()
+                .onFields("firstName", "lastName", "middleName").build();
+        mongoTemplate.indexOps(Spartan.class).ensureIndex(textIndex);
     }
 
     public List<Spartan> getJsonArrayToSpartans() {

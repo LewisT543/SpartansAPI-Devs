@@ -29,7 +29,7 @@ public class DatabaseSeederRunner implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         empty();
         seed();
     }
@@ -37,6 +37,7 @@ public class DatabaseSeederRunner implements CommandLineRunner {
     private void seed() {
         MongoSeeder seeder = new MongoSeeder(mongoTemplate);
         seeder.addDocuments();
+        seeder.indexFields(); // fields: [firstName, lastName, middleName]
     }
 
     private void empty() {

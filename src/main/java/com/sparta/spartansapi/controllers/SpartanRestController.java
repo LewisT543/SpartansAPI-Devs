@@ -22,6 +22,11 @@ public class SpartanRestController {
         return spartanService.getAllSpartans();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getSpartansById(@PathVariable String id) {
+        return spartanService.getSpartanById(id);
+    }
+
     @GetMapping(value="/", params={"q"})
     public ResponseEntity<?> getSpartansByFullTextSearch(@RequestParam String q) {
         return spartanService.getSpartansByFullTextSearch(q);
@@ -75,10 +80,8 @@ public class SpartanRestController {
             return spartanService.getSpartansByStartDateBetween(Utilities.stringToDate(startdatelower),
                     Utilities.stringToDate(startdateupper));
         } else
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null, HttpStatus.CHECKPOINT);
     }
-
-
 
 //    @GetMapping(value="/course", params={"name"})
 //    public ResponseEntity<?> getSpartansByCourseName(@RequestParam String course) {
