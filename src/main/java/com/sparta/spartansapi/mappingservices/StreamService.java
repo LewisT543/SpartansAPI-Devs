@@ -1,7 +1,6 @@
 package com.sparta.spartansapi.mappingservices;
 
-import com.sparta.spartansapi.dtos.StreamDTO;
-import com.sparta.spartansapi.mongodb.models.Spartan;
+
 import com.sparta.spartansapi.mongodb.models.Stream;
 import com.sparta.spartansapi.mongodb.repos.StreamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,31 +11,16 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class StreamService {
 
-    @Autowired
     private StreamRepository streamRepository;
 
+    @Autowired
     public StreamService(StreamRepository streamRepository) {
         this.streamRepository = streamRepository;
     }
-
-//    public List<StreamDTO> findAll() {
-//        return streamRepository.findAll()
-//                .stream()
-//                .map(this::toStreamDTO)
-//                .collect(Collectors.toList());
-//    }
-
-//    private StreamDTO toStreamDTO(Stream stream) {
-//        StreamDTO streamDTO = new StreamDTO();
-//        streamDTO.setStreamname(stream.getName());
-//        streamDTO.setStreamduration(stream.getDuration());
-//        return streamDTO;
-//    }
 
     public ResponseEntity<?> findAllStreams() {
         try {
@@ -63,7 +47,6 @@ public class StreamService {
         else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
     }
 
     public ResponseEntity<HttpStatus> deleteById(String id) {
@@ -87,7 +70,7 @@ public class StreamService {
         }
     }
 
-    public ResponseEntity<Stream> addCourse(Stream stream) {
+    public ResponseEntity<Stream> addStream(Stream stream) {
         try {
             return new ResponseEntity<>(streamRepository.insert(stream), HttpStatus.OK);
         } catch (Exception e) {
