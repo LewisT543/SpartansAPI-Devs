@@ -30,7 +30,7 @@ public class SpartanService {
         this.spartanRepository = spartanRepository;
     }
 
-    public ResponseEntity<Spartan> addNewSpartan(Spartan spartan){
+    public ResponseEntity<?> addNewSpartan(Spartan spartan){
         // Currently doesn't check for duplicate spartans
         try {
             Spartan newSpartan = spartanRepository.insert(new Spartan(spartan.getFirstName(), spartan.getMiddleName(), spartan.getLastName(),
@@ -39,7 +39,7 @@ public class SpartanService {
             return new ResponseEntity<>(newSpartan, HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Unexpected Server error.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -47,13 +47,11 @@ public class SpartanService {
         try {
             List<Spartan> spartans = new ArrayList<>(spartanRepository.findAll());
             if(spartans.isEmpty())
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body("No spartans found");
+                return new ResponseEntity<>("No Spartans found.", HttpStatus.OK);
             return new ResponseEntity<>(spartans, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Unexpected Server error.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -61,11 +59,11 @@ public class SpartanService {
         try {
             Optional<Spartan> spartan = spartanRepository.findById(id);
             if (spartan.isEmpty())
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No spartan found");
+                return new ResponseEntity<>("No Spartans found with id: " + id, HttpStatus.OK);
             return new ResponseEntity<>(spartan, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected server error");
+            return new ResponseEntity<>("Unexpected Server error.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -73,13 +71,11 @@ public class SpartanService {
         try {
             List<Spartan> spartans = spartanRepository.getSpartansByStartDateAfter(startDate);
             if(spartans.isEmpty())
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body("No spartans found");
-            return new ResponseEntity<>(spartans, HttpStatus.OK);
+                return new ResponseEntity<>("No Spartans found with start date after: " + startDate, HttpStatus.OK);
+        return new ResponseEntity<>(spartans, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Unexpected Server error.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -87,13 +83,12 @@ public class SpartanService {
         try {
             List<Spartan> spartans = spartanRepository.getSpartansByStartDateBetween(startDateMin, startDateMax);
             if(spartans.isEmpty())
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body("No spartans found");
+                return new ResponseEntity<>("No Spartans found between: " + startDateMin
+                        + " and " + startDateMax, HttpStatus.OK);
             return new ResponseEntity<>(spartans, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Unexpected Server error.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -101,12 +96,10 @@ public class SpartanService {
         try {
             List<Spartan> spartans = spartanRepository.getSpartansByCourseName(courseName);
             if(spartans.isEmpty())
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body("No spartans found");
+                return new ResponseEntity<>("No Spartans found with course name: " + courseName, HttpStatus.OK);
             return new ResponseEntity<>(spartans, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Unexpected Server error.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -114,12 +107,10 @@ public class SpartanService {
         try {
             List<Spartan> spartans = spartanRepository.getSpartansByStreamName(streamName);
             if(spartans.isEmpty())
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body("No spartans found");
+                return new ResponseEntity<>("No Spartans found with stream name: " + streamName, HttpStatus.OK);
             return new ResponseEntity<>(spartans, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Unexpected Server error.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -127,13 +118,11 @@ public class SpartanService {
         try {
             List<Spartan> spartans = spartanRepository.findAll(getMatcherExample(text));
             if(spartans.isEmpty())
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body("No spartans found");
+                return new ResponseEntity<>("No Spartans found with text: " + text, HttpStatus.OK);
             return new ResponseEntity<>(spartans, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Unexpected Server error.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -151,24 +140,33 @@ public class SpartanService {
     }
 
     public ResponseEntity<?> updateSpartanById(String id, Spartan spartan) {
-        Optional<Spartan> foundSpartan = spartanRepository.findById(id);
-           if (foundSpartan.isPresent()) {
-            Spartan updatedSpartan = new Spartan(spartan.getId(), spartan.getFirstName(), spartan.getMiddleName(), spartan.getLastName(),
-                    spartan.getStartDate(), spartan.getCourse(), spartan.getStream(), spartan.getEmail(),
-                    Utilities.calculateEndDate(spartan.getStartDate(), spartan.getStream()));
-            return new ResponseEntity<>(spartanRepository.save(updatedSpartan), HttpStatus.OK);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot update spartan");
+        try {
+            Optional<Spartan> foundSpartan = spartanRepository.findById(id);
+            if (foundSpartan.isPresent()) {
+                Spartan updatedSpartan = new Spartan(spartan.getId(), spartan.getFirstName(), spartan.getMiddleName(), spartan.getLastName(),
+                        spartan.getStartDate(), spartan.getCourse(), spartan.getStream(), spartan.getEmail(),
+                        Utilities.calculateEndDate(spartan.getStartDate(), spartan.getStream()));
+                return new ResponseEntity<>(spartanRepository.save(updatedSpartan), HttpStatus.OK);
+            } else
+                return new ResponseEntity<>("Cannot update Spartan with id: " + id, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Unexpected Server error.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
 
     public ResponseEntity<?> deleteSpartanById(String id) {
         try {
-            spartanRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            Optional<Spartan> foundSpartan = spartanRepository.findById(id);
+            if (foundSpartan.isPresent()) {
+                spartanRepository.deleteById(id);
+                return new ResponseEntity<>("Spartan Deleted with id: " + id, HttpStatus.OK);
+            } else
+                return new ResponseEntity<>("Cannot delete Spartan with id: " + id, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Cannot delete Spartan");
+            return new ResponseEntity<>("Unexpected Server error.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
