@@ -105,7 +105,7 @@ public class SpartanService {
     public ResponseEntity<?>getSpartansByStreamName(String streamName) {
         try {
             List<Spartan> spartans = spartanRepository.getSpartansByStreamName(streamName);
-            if(!new InputValidator().isStreamNameValid(streamName))
+            if(!validator.isStreamNameValid(streamName))
                 return new ResponseEntity<>(new APIResponse(spartans, ResponseManager.FIELD_FORMAT_INVALID, spartans.size(), HttpStatus.OK.value()), HttpStatus.OK);
             if(spartans.isEmpty())
                 return new ResponseEntity<>(new APIResponse(spartans, ResponseManager.NO_RECORDS_FOUND, 0, HttpStatus.OK.value()), HttpStatus.OK);
