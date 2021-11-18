@@ -3,6 +3,9 @@ package com.sparta.spartansapi.mappingservices;
 
 import com.sparta.spartansapi.mongodb.models.Stream;
 import com.sparta.spartansapi.mongodb.repos.StreamRepository;
+import com.sparta.spartansapi.utils.APIMessageResponse;
+import com.sparta.spartansapi.utils.APIResponse;
+import com.sparta.spartansapi.utils.ResponseManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,62 +25,65 @@ public class StreamService {
         this.streamRepository = streamRepository;
     }
 
+    public ResponseEntity<?> addStream(Stream stream) {
+        try {
+            return new ResponseEntity<>(new APIResponse(new ArrayList<>(List.of(streamRepository.insert(stream))), ResponseManager.RECORD_ADDED, 1, HttpStatus.OK.value()), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public ResponseEntity<?> findAllStreams() {
         try {
             List<Stream> streams = new ArrayList<>(streamRepository.findAll());
-            if(streams.isEmpty())
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body("No spartans found");
-            return new ResponseEntity<>(streams, HttpStatus.OK);
+            if(streams.isEmpty()) {
+                return new ResponseEntity<>(new APIResponse(streams, ResponseManager.NO_RECORDS_FOUND,0, HttpStatus.OK.value()),  HttpStatus.OK);
+            }
+            return new ResponseEntity<>(new APIResponse(streams, ResponseManager.RECORDS_FOUND, streams.size(), HttpStatus.OK.value()), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    public ResponseEntity<Stream> updateStream(String id, Stream stream){
-        Optional<Stream> streamData = streamRepository.findById(id);
-        if (streamData.isPresent()){
-            Stream _stream = streamData.get();
-            _stream.setName(stream.getName());
-            _stream.setDuration(stream.getDuration());
-            return new ResponseEntity<>(streamRepository.save(_stream), HttpStatus.OK);
-        }
-        else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    public ResponseEntity<HttpStatus> deleteById(String id) {
-        try {
-            streamRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public ResponseEntity<List<Stream>> findByName(String name){
+    public ResponseEntity<?> findByName(String name){
         try {
             List<Stream> streams = streamRepository.getStreamsByNameContains(name);
-            if (streams.isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(streams, HttpStatus.OK);
+            if (streams.isEmpty())
+                return new ResponseEntity<>(new APIResponse(streams, ResponseManager.NO_RECORDS_FOUND,0, HttpStatus.OK.value()), HttpStatus.OK);
+            return new ResponseEntity<>(new APIResponse(streams, ResponseManager.RECORDS_FOUND, streams.size(), HttpStatus.OK.value()), HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    public ResponseEntity<Stream> addStream(Stream stream) {
+    public ResponseEntity<?> updateStream(String id, Stream stream){
         try {
-            return new ResponseEntity<>(streamRepository.insert(stream), HttpStatus.OK);
+            Optional<Stream> streamData = streamRepository.findById(id);
+            if (streamData.isPresent()) {
+                Stream _stream = streamData.get();
+                _stream.setName(stream.getName());
+                _stream.setDuration(stream.getDuration());
+                return new ResponseEntity<>(new APIResponse(new ArrayList<>(List.of(streamRepository.save(_stream))), ResponseManager.RECORD_ADDED, 1, HttpStatus.OK.value()), HttpStatus.OK);
+            } else
+                return new ResponseEntity<>(new APIMessageResponse(ResponseManager.NO_RECORD_FOUND),HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-
+    public ResponseEntity<?> deleteById(String id) {
+        try{
+            Optional<Stream> foundStream = streamRepository.findById(id);
+            if (foundStream.isPresent()) {
+                streamRepository.deleteById(id);
+                return new ResponseEntity<>(new APIMessageResponse(ResponseManager.RECORD_DELETED), HttpStatus.OK);
+            } else
+                return new ResponseEntity<>(new APIMessageResponse(ResponseManager.NO_RECORD_FOUND),HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

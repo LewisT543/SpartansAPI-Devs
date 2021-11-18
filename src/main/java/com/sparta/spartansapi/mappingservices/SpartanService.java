@@ -2,44 +2,40 @@ package com.sparta.spartansapi.mappingservices;
 
 import com.sparta.spartansapi.mongodb.models.Spartan;
 import com.sparta.spartansapi.mongodb.repos.SpartanRepository;
-import com.sparta.spartansapi.utils.Utilities;
+import com.sparta.spartansapi.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.TextCriteria;
-import org.springframework.data.mongodb.core.query.TextQuery;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class SpartanService {
 
     private SpartanRepository spartanRepository;
+    private InputValidator validator = new InputValidator();
 
     @Autowired
     public SpartanService(SpartanRepository spartanRepository) {
         this.spartanRepository = spartanRepository;
     }
 
-    public ResponseEntity<Spartan> addNewSpartan(Spartan spartan){
+    public ResponseEntity<?> addNewSpartan(Spartan spartan) {
         // Currently doesn't check for duplicate spartans
         try {
-            Spartan newSpartan = spartanRepository.insert(new Spartan(spartan.getFirstName(), spartan.getMiddleName(), spartan.getLastName(),
+            Spartan newSpartan = new Spartan(spartan.getFirstName(), spartan.getMiddleName(), spartan.getLastName(),
                     spartan.getStartDate(), spartan.getCourse(), spartan.getStream(), spartan.getEmail(),
-                    Utilities.calculateEndDate(spartan.getStartDate(), spartan.getStream())));
-            return new ResponseEntity<>(newSpartan, HttpStatus.CREATED);
+                    Utilities.calculateEndDate(spartan.getStartDate(), spartan.getStream()));
+            if (validator.isSpartanValid(newSpartan)) {
+                spartanRepository.insert(newSpartan);
+                return new ResponseEntity<>(new APIResponse(new ArrayList<>(List.of(newSpartan)), ResponseManager.RECORD_ADDED, 1, HttpStatus.CREATED.value()), HttpStatus.CREATED);
+            } else return new ResponseEntity<>(new APIMessageResponse(ResponseManager.FIELD_FORMAT_INVALID), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -47,13 +43,11 @@ public class SpartanService {
         try {
             List<Spartan> spartans = new ArrayList<>(spartanRepository.findAll());
             if(spartans.isEmpty())
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body("No spartans found");
-            return new ResponseEntity<>(spartans, HttpStatus.OK);
+                return new ResponseEntity<>(new APIResponse(spartans, ResponseManager.NO_RECORDS_FOUND, 0, HttpStatus.OK.value()), HttpStatus.OK);
+            return new ResponseEntity<>(new APIResponse(spartans, ResponseManager.RECORDS_FOUND, spartans.size(), HttpStatus.OK.value()), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -61,11 +55,11 @@ public class SpartanService {
         try {
             Optional<Spartan> spartan = spartanRepository.findById(id);
             if (spartan.isEmpty())
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No spartan found");
-            return new ResponseEntity<>(spartan, HttpStatus.OK);
+                return new ResponseEntity<>(new APIResponse(new ArrayList<>(), ResponseManager.NO_RECORD_FOUND, 0, HttpStatus.OK.value()), HttpStatus.OK);
+            return new ResponseEntity<>(new APIResponse(new ArrayList<>(List.of(spartan)), ResponseManager.RECORD_FOUND, 1, HttpStatus.OK.value()) , HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected server error");
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -73,13 +67,11 @@ public class SpartanService {
         try {
             List<Spartan> spartans = spartanRepository.getSpartansByStartDateAfter(startDate);
             if(spartans.isEmpty())
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body("No spartans found");
-            return new ResponseEntity<>(spartans, HttpStatus.OK);
+                return new ResponseEntity<>(new APIResponse(spartans, ResponseManager.NO_RECORDS_FOUND, 0, HttpStatus.OK.value()), HttpStatus.OK);
+        return new ResponseEntity<>(new APIResponse(spartans, ResponseManager.RECORDS_FOUND, spartans.size(), HttpStatus.OK.value()), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -87,26 +79,26 @@ public class SpartanService {
         try {
             List<Spartan> spartans = spartanRepository.getSpartansByStartDateBetween(startDateMin, startDateMax);
             if(spartans.isEmpty())
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body("No spartans found");
-            return new ResponseEntity<>(spartans, HttpStatus.OK);
+                // Leave this error as a manual implementation - it is only used once and our solution does not work for this
+                return new ResponseEntity<>(new APIResponse(spartans, ResponseManager.NO_RECORDS_FOUND, 0, HttpStatus.OK.value()), HttpStatus.OK);
+            return new ResponseEntity<>(new APIResponse(spartans, ResponseManager.RECORDS_FOUND, spartans.size(), HttpStatus.OK.value()), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     public ResponseEntity<?>getSpartansByCourseName(String courseName) {
         try {
             List<Spartan> spartans = spartanRepository.getSpartansByCourseName(courseName);
-            if(spartans.isEmpty())
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body("No spartans found");
-            return new ResponseEntity<>(spartans, HttpStatus.OK);
+            if (spartans.isEmpty()) {
+                //throw new ResponseStatusException(HttpStatus.NO_CONTENT,  "No record found");
+                return new ResponseEntity<>(new APIResponse(spartans, ResponseManager.NO_RECORDS_FOUND, 0, HttpStatus.OK.value()), HttpStatus.OK);
+            }
+            return new ResponseEntity<>(new APIResponse(spartans, ResponseManager.RECORDS_FOUND, spartans.size(), HttpStatus.OK.value()), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -114,26 +106,23 @@ public class SpartanService {
         try {
             List<Spartan> spartans = spartanRepository.getSpartansByStreamName(streamName);
             if(spartans.isEmpty())
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body("No spartans found");
-            return new ResponseEntity<>(spartans, HttpStatus.OK);
+                return new ResponseEntity<>(new APIResponse(spartans, ResponseManager.NO_RECORDS_FOUND, 0, HttpStatus.OK.value()), HttpStatus.OK);
+            return new ResponseEntity<>(new APIResponse(spartans, ResponseManager.RECORDS_FOUND, spartans.size(), HttpStatus.OK.value()), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     public ResponseEntity<?>getSpartansByFullTextSearch(String text) {
         try {
             List<Spartan> spartans = spartanRepository.findAll(getMatcherExample(text));
-            if(spartans.isEmpty())
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body("No spartans found");
-            return new ResponseEntity<>(spartans, HttpStatus.OK);
+            if(spartans.isEmpty()) {
+                return new ResponseEntity<>(new APIResponse(spartans, ResponseManager.NO_RECORDS_FOUND, 0, HttpStatus.OK.value()), HttpStatus.OK);
+            }
+            return new ResponseEntity<>(new APIResponse(spartans, ResponseManager.RECORDS_FOUND, spartans.size(), HttpStatus.OK.value()), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -150,25 +139,35 @@ public class SpartanService {
         return Example.of(spartan, customExampleMatcher);
     }
 
+    //TODO: Not returning No Record response when ID is invalid
     public ResponseEntity<?> updateSpartanById(String id, Spartan spartan) {
-        Optional<Spartan> foundSpartan = spartanRepository.findById(id);
-           if (foundSpartan.isPresent()) {
-            Spartan updatedSpartan = new Spartan(spartan.getId(), spartan.getFirstName(), spartan.getMiddleName(), spartan.getLastName(),
-                    spartan.getStartDate(), spartan.getCourse(), spartan.getStream(), spartan.getEmail(),
-                    Utilities.calculateEndDate(spartan.getStartDate(), spartan.getStream()));
-            return new ResponseEntity<>(spartanRepository.save(updatedSpartan), HttpStatus.OK);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot update spartan");
+        try {
+            Optional<Spartan> foundSpartan = spartanRepository.findById(id);
+            if (foundSpartan.isPresent()) {
+                Spartan updatedSpartan = new Spartan(spartan.getId(), spartan.getFirstName(), spartan.getMiddleName(), spartan.getLastName(),
+                        spartan.getStartDate(), spartan.getCourse(), spartan.getStream(), spartan.getEmail(),
+                        Utilities.calculateEndDate(spartan.getStartDate(), spartan.getStream()));
+                return new ResponseEntity<>(new APIResponse(new ArrayList<>(List.of(spartanRepository.save(updatedSpartan))), ResponseManager.RECORD_UPDATED, 1, HttpStatus.OK.value()), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new APIMessageResponse(ResponseManager.NO_RECORD_FOUND), HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     public ResponseEntity<?> deleteSpartanById(String id) {
         try {
-            spartanRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            Optional<Spartan> foundSpartan = spartanRepository.findById(id);
+            if (foundSpartan.isPresent()) {
+                spartanRepository.deleteById(id);
+                return new ResponseEntity<>(new APIMessageResponse(ResponseManager.RECORD_DELETED), HttpStatus.OK);
+            } else
+                return new ResponseEntity<>(new APIMessageResponse(ResponseManager.NO_RECORD_FOUND), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Cannot delete Spartan");
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

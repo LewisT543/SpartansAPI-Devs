@@ -2,11 +2,16 @@ package com.sparta.spartansapi.controllers;
 
 import com.sparta.spartansapi.mappingservices.SpartanService;
 import com.sparta.spartansapi.mongodb.models.Spartan;
+import com.sparta.spartansapi.utils.APIMessageResponse;
+import com.sparta.spartansapi.utils.ResponseManager;
 import com.sparta.spartansapi.utils.Utilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -39,20 +44,22 @@ public class SpartanRestController {
         if (Utilities.stringToDate(startdate) != null)
             return spartanService.getSpartansByStartDateAfter(Utilities.stringToDate(startdate));
         else
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.DATES_WRONG_FORMAT), HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping(value="/spartans/range", params={"dateafter", "datebefore"})
     public ResponseEntity<?> getSpartansByStartDateBetween(@RequestParam String dateafter,
-                                                    @RequestParam String datebefore) {
+                                                            @RequestParam String datebefore) {
+        if (Utilities.datesAreValid(Utilities.stringToDate(datebefore), Utilities.stringToDate(dateafter)))
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.DATES_WRONG_ORDER), HttpStatus.BAD_REQUEST);
         if ((Utilities.stringToDate(dateafter) != null) && (Utilities.stringToDate(datebefore) != null)) {
             return spartanService.getSpartansByStartDateBetween(Utilities.stringToDate(dateafter),
                     Utilities.stringToDate(datebefore));
         } else
-            return new ResponseEntity<>(null, HttpStatus.CHECKPOINT);
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.DATES_WRONG_FORMAT), HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping(value="/spartans", params={"course"})
+    @GetMapping(value="/spartans", params={"course"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getSpartansByCourseName(@RequestParam String course) {
         return spartanService.getSpartansByCourseName(course);
     }

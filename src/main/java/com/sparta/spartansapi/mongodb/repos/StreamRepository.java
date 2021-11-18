@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface StreamRepository extends MongoRepository<Stream, String> {
     List<Stream> getStreamsByNameContains(String name);
+    List<Stream> getStreamsBy(String name);
 }
