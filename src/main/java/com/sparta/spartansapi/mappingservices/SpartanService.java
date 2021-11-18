@@ -24,6 +24,9 @@ public class SpartanService {
     }
 
     public ResponseEntity<?> addNewSpartan(Spartan spartan) {
+        if (!validator.isInputSpartanValid(spartan)) {
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.FIELD_FORMAT_INVALID), HttpStatus.BAD_REQUEST);
+        }
         // Currently doesn't check for duplicate spartans
         try {
             Spartan newSpartan = new Spartan(spartan.getFirstName(), spartan.getMiddleName(), spartan.getLastName(),
