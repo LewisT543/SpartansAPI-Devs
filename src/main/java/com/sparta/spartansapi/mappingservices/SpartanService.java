@@ -29,7 +29,6 @@ public class SpartanService {
             Spartan newSpartan = new Spartan(spartan.getFirstName(), spartan.getMiddleName(), spartan.getLastName(),
                     spartan.getStartDate(), spartan.getCourse(), spartan.getStream(), spartan.getEmail(),
                     Utilities.calculateEndDate(spartan.getStartDate(), spartan.getStream()));
-            System.out.println(Utilities.calculateEndDate(spartan.getStartDate(), spartan.getStream()));
             if (validator.isSpartanValid(newSpartan)) {
                 spartanRepository.insert(newSpartan);
                 return new ResponseEntity<>(new APIResponse(new ArrayList<>(List.of(newSpartan)), ResponseManager.RECORD_ADDED, 1, HttpStatus.CREATED.value()), HttpStatus.CREATED);
