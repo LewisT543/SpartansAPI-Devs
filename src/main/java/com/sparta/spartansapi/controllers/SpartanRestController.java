@@ -47,7 +47,7 @@ public class SpartanRestController {
             return new ResponseEntity<>(new APIMessageResponse(ResponseManager.DATES_WRONG_FORMAT), HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping(value="/spartans/range", params={"dateafter", "datebefore"})
+    @GetMapping(value="/spartans/range", params={"dateafter", "dateafter"})
     public ResponseEntity<?> getSpartansByStartDateBetween(@RequestParam String dateafter,
                                                             @RequestParam String datebefore) {
         if (Utilities.datesAreValid(Utilities.stringToDate(datebefore), Utilities.stringToDate(dateafter)))

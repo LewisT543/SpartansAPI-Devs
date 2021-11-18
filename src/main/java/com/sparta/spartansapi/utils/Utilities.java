@@ -51,7 +51,10 @@ public class Utilities {
         return DateUtils.addWeeks(startDate, STREAM_DURATIONS.get(stream.getName()));
     }
 
+
     public static boolean datesAreValid(Date startDate, Date endDate) {
+        if (startDate == null || endDate == null)
+            return false;
         return startDate.before(endDate);
     }
 }
