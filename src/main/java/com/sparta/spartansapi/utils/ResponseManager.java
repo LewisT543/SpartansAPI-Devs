@@ -16,4 +16,7 @@ public final class ResponseManager {
     public static final String RECORD_DELETED = "Record deleted";
     public static final String RECORD_UPDATED = "Record updated";
     public static final String FIELD_FORMAT_INVALID = "Field format invalid";
+
+    public static final String DATES_WRONG_ORDER = "Invalid Date entry, make sure datebefore is earlier than dateafter.";
+    public static final String DATES_WRONG_FORMAT = "Invalid Date entry, please use yyyy-MM-dd format.";
 }
