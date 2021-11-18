@@ -6,8 +6,6 @@ import com.sparta.spartansapi.mongodb.repos.StreamRepository;
 import com.sparta.spartansapi.utils.APIMessageResponse;
 import com.sparta.spartansapi.utils.APIResponse;
 import com.sparta.spartansapi.utils.ResponseManager;
-import io.swagger.annotations.Api;
-import io.swagger.models.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
