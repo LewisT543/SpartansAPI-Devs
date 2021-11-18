@@ -18,10 +18,10 @@ public class InputValidator implements Validator{
                 isStreamNotNull(spartan.getStream()) &&
                 isEmailNotNull(spartan.getEmail()) &&
                 isEndDateNotNull(spartan.getEndDate()) &&
-                isEmailValid(spartan.getEmail()) &&
-                isEndDateValid(spartan.getStartDate(), spartan.getEndDate(), spartan.getStream()) &&
                 isCourseValid(spartan.getCourse()) &&  // short-circuiting will mean if course is null, this check won't get performed
-                isStreamValid(spartan.getStream());
+                isStreamValid(spartan.getStream()) &&
+                isEmailValid(spartan.getEmail()) &&
+                isEndDateValid(spartan.getStartDate(), spartan.getEndDate(), spartan.getStream());
 
     }
 
@@ -31,7 +31,9 @@ public class InputValidator implements Validator{
                 isStartDateNotNull(spartan.getStartDate()) &&
                 isCourseNotNull(spartan.getCourse()) &&
                 isStreamNotNull(spartan.getStream()) &&
-                isEmailNotNull(spartan.getEmail());
+                isEmailNotNull(spartan.getEmail()) &&
+                isCourseValid(spartan.getCourse()) &&  // short-circuiting will mean if course is null, this check won't get performed
+                isStreamValid(spartan.getStream());
     }
 
     @Override

@@ -146,13 +146,21 @@ public class SpartanService {
 
     //TODO: Not returning No Record response when ID is invalid
     public ResponseEntity<?> updateSpartanById(String id, Spartan spartan) {
+        if (!validator.isInputSpartanValid(spartan)) {
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.FIELD_FORMAT_INVALID), HttpStatus.BAD_REQUEST);
+        }
         try {
             Optional<Spartan> foundSpartan = spartanRepository.findById(id);
             if (foundSpartan.isPresent()) {
-                Spartan updatedSpartan = new Spartan(spartan.getId(), spartan.getFirstName(), spartan.getMiddleName(), spartan.getLastName(),
+                Spartan updatedSpartan = new Spartan(id, spartan.getFirstName(), spartan.getMiddleName(), spartan.getLastName(),
                         spartan.getStartDate(), spartan.getCourse(), spartan.getStream(), spartan.getEmail(),
                         Utilities.calculateEndDate(spartan.getStartDate(), spartan.getStream()));
-                return new ResponseEntity<>(new APIResponse(new ArrayList<>(List.of(spartanRepository.save(updatedSpartan))), ResponseManager.RECORD_UPDATED, 1, HttpStatus.OK.value()), HttpStatus.OK);
+                if (validator.isSpartanValid(updatedSpartan)) {
+                    return new ResponseEntity<>(new APIResponse(new ArrayList<>(List.of(spartanRepository.save(updatedSpartan))), ResponseManager.RECORD_UPDATED, 1, HttpStatus.OK.value()), HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>(new APIMessageResponse(ResponseManager.FIELD_FORMAT_INVALID), HttpStatus.INTERNAL_SERVER_ERROR);
+
+                }
             } else {
                 return new ResponseEntity<>(new APIMessageResponse(ResponseManager.NO_RECORD_FOUND), HttpStatus.OK);
             }
