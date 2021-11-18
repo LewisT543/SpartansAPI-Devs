@@ -15,11 +15,11 @@ public interface Validator {
     // spartan data
     boolean isFirstNameNotNull(String firstName);
     boolean isLastNameNotNull(String lastName);
-    boolean isStartDateNotNull(String startDate);
+    boolean isStartDateNotNull(Date startDate);
     boolean isCourseNotNull(Course course);
     boolean isStreamNotNull(Stream stream);
     boolean isEmailNotNull(String email);
-    boolean isEndDateNotNull(String endDate);
+    boolean isEndDateNotNull(Date endDate);
 
     boolean isEndDateValid(Date startDate, Date endDate, Stream stream);
     boolean isEmailValid(String email);

@@ -13,24 +13,38 @@ public class InputValidator implements Validator{
         // don't mind me, just chaining a billion function calls together
         return isFirstNameNotNull(spartan.getFirstName()) &&
                 isLastNameNotNull(spartan.getLastName()) &&
-                isStartDateNotNull(spartan.getStartDate().toString()) &&
+                isStartDateNotNull(spartan.getStartDate()) &&
                 isCourseNotNull(spartan.getCourse()) &&
                 isStreamNotNull(spartan.getStream()) &&
                 isEmailNotNull(spartan.getEmail()) &&
-                isEndDateNotNull(spartan.getEndDate().toString()) &&
+                isEndDateNotNull(spartan.getEndDate()) &&
                 isEmailValid(spartan.getEmail()) &&
-                isEndDateValid(spartan.getStartDate(), spartan.getEndDate(), spartan.getStream());
+                isEndDateValid(spartan.getStartDate(), spartan.getEndDate(), spartan.getStream()) &&
+                isCourseValid(spartan.getCourse()) &&  // short-circuiting will mean if course is null, this check won't get performed
+                isStreamValid(spartan.getStream());
 
+    }
+
+    public boolean isInputSpartanValid(Spartan spartan) {
+        return isFirstNameNotNull(spartan.getFirstName()) &&
+                isLastNameNotNull(spartan.getLastName()) &&
+                isStartDateNotNull(spartan.getStartDate()) &&
+                isCourseNotNull(spartan.getCourse()) &&
+                isStreamNotNull(spartan.getStream()) &&
+                isEmailNotNull(spartan.getEmail());
     }
 
     @Override
     public boolean isCourseValid(Course course) {
-        return isCourseNameValid(course.getName());
+        return isCourseNameNotNull(course.getName()) && isCourseNameValid(course.getName());
     }
 
     @Override
     public boolean isStreamValid(Stream stream) {
-        return isStreamDurationGreaterThan0(stream.getDuration()) && isStreamNameValid(stream.getName());
+        return isStreamNameNotNull(stream.getName()) &&
+                isStreamDurationNotNull(stream.getDuration()) &&
+                isStreamDurationGreaterThan0(stream.getDuration()) &&
+                isStreamNameValid(stream.getName());
     }
 
     @Override
@@ -44,7 +58,7 @@ public class InputValidator implements Validator{
     }
 
     @Override
-    public boolean isStartDateNotNull(String startDate) {
+    public boolean isStartDateNotNull(Date startDate) {
         return startDate != null;
     }
 
@@ -64,7 +78,7 @@ public class InputValidator implements Validator{
     }
 
     @Override
-    public boolean isEndDateNotNull(String endDate) {
+    public boolean isEndDateNotNull(Date endDate) {
         return endDate != null;
     }
 
@@ -88,6 +102,18 @@ public class InputValidator implements Validator{
     @Override
     public boolean isEmailValid(String email) {
         return email.matches(".+@spartaglobal.com");
+    }
+
+    public boolean isCourseNameNotNull(String courseName) {
+        return courseName != null;
+    }
+
+    public boolean isStreamNameNotNull(String streamName) {
+        return streamName != null;
+    }
+
+    public boolean isStreamDurationNotNull(Long duration) {
+        return duration != null;
     }
 
     @Override
