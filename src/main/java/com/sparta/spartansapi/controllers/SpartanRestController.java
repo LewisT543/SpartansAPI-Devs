@@ -5,8 +5,11 @@ import com.sparta.spartansapi.mongodb.models.Spartan;
 import com.sparta.spartansapi.utils.Utilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -54,7 +57,7 @@ public class SpartanRestController {
             return new ResponseEntity<>("Invalid Date entry, please use yyyy-MM-dd format.", HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping(value="/spartans", params={"course"})
+    @GetMapping(value="/spartans", params={"course"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getSpartansByCourseName(@RequestParam String course) {
         return spartanService.getSpartansByCourseName(course);
     }
