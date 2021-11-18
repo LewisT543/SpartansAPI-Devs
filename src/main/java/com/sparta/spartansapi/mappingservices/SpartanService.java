@@ -26,10 +26,12 @@ public class SpartanService {
     public ResponseEntity<?> addNewSpartan(Spartan spartan) {
         // Currently doesn't check for duplicate spartans
         try {
-            Spartan newSpartan = spartanRepository.insert(new Spartan(spartan.getFirstName(), spartan.getMiddleName(), spartan.getLastName(),
+            Spartan newSpartan = new Spartan(spartan.getFirstName(), spartan.getMiddleName(), spartan.getLastName(),
                     spartan.getStartDate(), spartan.getCourse(), spartan.getStream(), spartan.getEmail(),
-                    Utilities.calculateEndDate(spartan.getStartDate(), spartan.getStream())));
+                    Utilities.calculateEndDate(spartan.getStartDate(), spartan.getStream()));
+            System.out.println(Utilities.calculateEndDate(spartan.getStartDate(), spartan.getStream()));
             if (validator.isSpartanValid(newSpartan)) {
+                spartanRepository.insert(newSpartan);
                 return new ResponseEntity<>(new APIResponse(new ArrayList<>(List.of(newSpartan)), ResponseManager.RECORD_ADDED, 1, HttpStatus.CREATED.value()), HttpStatus.CREATED);
             } else return new ResponseEntity<>(new APIMessageResponse(ResponseManager.FIELD_FORMAT_INVALID), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {

@@ -72,7 +72,6 @@ public class InputValidator implements Validator{
     public boolean isEndDateValid(Date startDate, Date endDate, Stream stream) {
         // start date occurs before end date
         Long duration = stream.getDuration();
-
         if (startDate == null || endDate == null) {
             return false;
         }

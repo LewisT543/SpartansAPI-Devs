@@ -52,7 +52,7 @@ public class Utilities {
     }
 
     public static boolean datesAreValid(Date startDate, Date endDate) {
-        return startDate.before(endDate);
+        return endDate.before(startDate);
     }
 }
 
