@@ -17,9 +17,7 @@ public class InputValidator implements Validator{
                 isCourseNotNull(spartan.getCourse()) &&
                 isStreamNotNull(spartan.getStream()) &&
                 isEmailNotNull(spartan.getEmail()) &&
-                isEndDateNotNull(spartan.getEndDate().toString()) &&
-                isEmailValid(spartan.getEmail()) &&
-                isEndDateValid(spartan.getStartDate().toString(), spartan.getEndDate().toString(), spartan.getStream());
+                isEmailValid(spartan.getEmail());
     }
 
     @Override
