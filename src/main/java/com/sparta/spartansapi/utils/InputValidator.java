@@ -17,7 +17,10 @@ public class InputValidator implements Validator{
                 isCourseNotNull(spartan.getCourse()) &&
                 isStreamNotNull(spartan.getStream()) &&
                 isEmailNotNull(spartan.getEmail()) &&
-                isEmailValid(spartan.getEmail());
+                isEndDateNotNull(spartan.getEndDate().toString()) &&
+                isEmailValid(spartan.getEmail()) &&
+                isEndDateValid(spartan.getStartDate(), spartan.getEndDate(), spartan.getStream());
+
     }
 
     @Override
@@ -66,20 +69,18 @@ public class InputValidator implements Validator{
     }
 
     @Override
-    public boolean isEndDateValid(String startDate, String endDate, Stream stream) {
+    public boolean isEndDateValid(Date startDate, Date endDate, Stream stream) {
         // start date occurs before end date
-        Date start = Utilities.stringToDate(startDate);
-        Date end = Utilities.stringToDate(endDate);
         Long duration = stream.getDuration();
 
-        if (start == null || end == null) {
+        if (startDate == null || endDate == null) {
             return false;
         }
-        Date calcEnd = DateUtils.addWeeks(start, Math.toIntExact(duration));
-        if (end.before(start)) {
+        Date calcEnd = DateUtils.addWeeks(startDate, Math.toIntExact(duration));
+        if (endDate.before(startDate)) {
             return false;
         }
-        if (end.compareTo(calcEnd) != 0) {
+        if (endDate.compareTo(calcEnd) != 0) {
             return false;
         }
         return true;
