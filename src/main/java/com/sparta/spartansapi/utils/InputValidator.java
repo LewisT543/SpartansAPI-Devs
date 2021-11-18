@@ -49,6 +49,12 @@ public class InputValidator implements Validator{
                 isStreamNameValid(stream.getName());
     }
 
+    public boolean isStreamInputValid(Stream stream) {
+        return isStreamNameNotNull(stream.getName()) &&
+                isStreamDurationNotNull(stream.getDuration()) &&
+                isStreamDurationGreaterThan0(stream.getDuration());
+    }
+
     @Override
     public boolean isFirstNameNotNull(String firstName) {
         return firstName != null;
