@@ -1,5 +1,6 @@
 package com.sparta.spartansapi.mappingservices;
 
+import com.mongodb.MongoSocketReadTimeoutException;
 import com.sparta.spartansapi.mongodb.models.Spartan;
 import com.sparta.spartansapi.mongodb.repos.SpartanRepository;
 import com.sparta.spartansapi.utils.*;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SpartanService {
@@ -120,7 +122,8 @@ public class SpartanService {
 
     public ResponseEntity<?>getSpartansByFullTextSearch(String text) {
         try {
-            List<Spartan> spartans = spartanRepository.findAll(getMatcherExample(text));
+            //List<Spartan> spartans = spartanRepository.findAll(getMatcherExample(text));
+            List<Spartan> spartans = findMatches(text);
             if(spartans.isEmpty()) {
                 return new ResponseEntity<>(new APIResponse(spartans, ResponseManager.NO_RECORDS_FOUND, 0, HttpStatus.OK.value()), HttpStatus.OK);
             }
@@ -129,6 +132,23 @@ public class SpartanService {
             e.printStackTrace();
             return new ResponseEntity<>(new APIMessageResponse(ResponseManager.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private List<Spartan> findMatches(String query) {
+        List<String> fragments = List.of(query.split(" "));
+        List<Spartan> spartans = spartanRepository.findAll()
+                .parallelStream()
+                .filter((s) -> {
+                    int matches = 0;
+                    String fullName = s.getFirstName() + " " + s.getMiddleName() + " " + s.getLastName();
+                    for(String f : fragments) {
+                        if (fullName.contains(f))
+                            matches = matches + 1;
+                    }
+                    double score = ((double) matches / fragments.size()) * 100;
+                    return score >= 50;
+                }).collect(Collectors.toList());
+        return spartans;
     }
 
     // Helper method for above
@@ -144,7 +164,6 @@ public class SpartanService {
         return Example.of(spartan, customExampleMatcher);
     }
 
-    //TODO: Not returning No Record response when ID is invalid
     public ResponseEntity<?> updateSpartanById(String id, Spartan spartan) {
         if (!validator.isInputSpartanValid(spartan)) {
             return new ResponseEntity<>(new APIMessageResponse(ResponseManager.FIELD_FORMAT_INVALID), HttpStatus.BAD_REQUEST);
