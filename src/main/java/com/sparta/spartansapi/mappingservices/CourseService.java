@@ -4,6 +4,7 @@ import com.sparta.spartansapi.mongodb.models.Course;
 import com.sparta.spartansapi.mongodb.repos.CourseRepository;
 import com.sparta.spartansapi.utils.APIMessageResponse;
 import com.sparta.spartansapi.utils.APIResponse;
+import com.sparta.spartansapi.utils.InputValidator;
 import com.sparta.spartansapi.utils.ResponseManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.Optional;
 @Service
 public class CourseService {
     private CourseRepository courseRepository;
+    private final InputValidator validator = new InputValidator();
 
     @Autowired
     public CourseService(CourseRepository courseRepository) {
@@ -27,6 +29,9 @@ public class CourseService {
     }
 
     public ResponseEntity<?> addCourse(Course course) {
+        if (!validator.isCourseValid(course)) {
+            return new ResponseEntity<>(new APIMessageResponse(ResponseManager.FIELD_FORMAT_INVALID), HttpStatus.BAD_REQUEST);
+        }
         try {
             return new ResponseEntity<>(new APIResponse(new ArrayList<>(List.of(courseRepository.insert(course))), ResponseManager.RECORD_ADDED, 1, HttpStatus.CREATED.value()), HttpStatus.CREATED);
         } catch (Exception e) {
@@ -65,6 +70,9 @@ public class CourseService {
         try {
             Optional<Course> courseData = courseRepository.findById(id);
             if (courseData.isPresent()) {
+                if (!validator.isCourseValid(courseParam)) {
+                    return new ResponseEntity<>(new APIMessageResponse(ResponseManager.FIELD_FORMAT_INVALID), HttpStatus.BAD_REQUEST);
+                }
                 Course course = courseData.get();
                 course.setName(courseParam.getName());
                 return new ResponseEntity<>(new APIResponse(new ArrayList<>(List.of(courseRepository.save(course))),ResponseManager.RECORD_UPDATED,1,HttpStatus.OK.value()),HttpStatus.OK);
