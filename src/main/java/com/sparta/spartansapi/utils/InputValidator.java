@@ -20,6 +20,7 @@ public class InputValidator implements Validator{
                 isEndDateNotNull(spartan.getEndDate().toString()) &&
                 isEmailValid(spartan.getEmail()) &&
                 isEndDateValid(spartan.getStartDate(), spartan.getEndDate(), spartan.getStream());
+
     }
 
     @Override
