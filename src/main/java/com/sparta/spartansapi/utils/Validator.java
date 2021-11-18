@@ -4,6 +4,8 @@ import com.sparta.spartansapi.mongodb.models.Course;
 import com.sparta.spartansapi.mongodb.models.Spartan;
 import com.sparta.spartansapi.mongodb.models.Stream;
 
+import java.util.Date;
+
 public interface Validator {
 
     boolean isSpartanValid(Spartan spartan);
@@ -19,7 +21,7 @@ public interface Validator {
     boolean isEmailNotNull(String email);
     boolean isEndDateNotNull(String endDate);
 
-    boolean isEndDateValid(String startDate, String endDate, Stream stream);
+    boolean isEndDateValid(Date startDate, Date endDate, Stream stream);
     boolean isEmailValid(String email);
 
     //course data
