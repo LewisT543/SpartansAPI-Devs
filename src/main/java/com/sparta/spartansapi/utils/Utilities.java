@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class Utilities {
-    private static final HashMap<String, Integer> STREAM_DURATIONS = new HashMap<>() {{
+    public static final HashMap<String, Integer> STREAM_DURATIONS = new HashMap<>() {{
         put("Java Dev",	10);
         put("Java SDET", 10);
         put("C# Dev", 11);
