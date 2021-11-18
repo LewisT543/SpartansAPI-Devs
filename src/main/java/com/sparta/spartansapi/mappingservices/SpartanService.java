@@ -133,7 +133,6 @@ public class SpartanService {
         List<Spartan> spartans = spartanRepository.findAll()
                 .parallelStream()
                 .filter((s) -> {
-                    System.err.println("Filtering: " + s.getFirstName());
                     int matches = 0;
                     String fullName = s.getFirstName() + " " + s.getMiddleName() + " " + s.getLastName();
                     for(String f : fragments) {
@@ -141,7 +140,6 @@ public class SpartanService {
                             matches = matches + 1;
                     }
                     double score = ((double) matches / fragments.size()) * 100;
-                    System.err.println("Score: " + score);
                     return score >= 50;
                 }).collect(Collectors.toList());
         return spartans;
